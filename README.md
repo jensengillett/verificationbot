@@ -1,5 +1,5 @@
 # jensengillett/verificationbot
-Discord verification bot. Fully modular and configurable.
+Discord verification bot designed for postsecondary institutions. Fully modular and configurable.
 
 # Background
 This project started as a small project for the UVic Engineering and Computer Science discord. With a growing server population, we wanted to make an automated system to stop non-UVic students from accessing the remainder of the Discord server. It was with this goal in mind that this bot was initially created.
