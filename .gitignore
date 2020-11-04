@@ -1,0 +1,15 @@
+
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/UVicdiscordbot.iml
+.idea/modules.xml
+.idea/misc.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/discord.xml
+.idea/dataSources.xml
+.idea/dataSources.local.xml
+.idea/codeStyles/codeStyleConfig.xml
+util/data/__pycache__/value_helper.cpython-38.pyc
+util/data/__pycache__/table_helper.cpython-38.pyc
+util/data/__pycache__/guild_data.cpython-38.pyc
