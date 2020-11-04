@@ -1,0 +1,4 @@
+#Requirements
+discord.py
+varint
+sqlalchemy
