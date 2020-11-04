@@ -2,9 +2,9 @@
 Discord verification bot designed for postsecondary institutions. Fully modular and configurable.
 
 # Background
-This project started as a small project for the UVic Engineering and Computer Science discord. With a growing server population, we wanted to make an automated system to stop non-UVic students from accessing the remainder of the Discord server. It was with this goal in mind that this bot was initially created.
+This project started as a small project for the UVic Engineering and Computer Science Discord server. With a growing server population, we wanted to make an automated system to stop non-UVic students from accessing the remainder of the Discord server. It was with this goal in mind that this bot was initially created.
 
-As the bot has been an effective stopgap for keeping trolls and non-UVic students out of our discord server, other servers started to take notice. Thanks to the Fall 2020 semester being fully online, many discord servers popped up, some with thousands of members, and the lack of a verification system has become a concern.
+As the bot has been an effective stopgap for keeping trolls and non-UVic students out of our Discord server, other servers started to take notice. Thanks to the Fall 2020 semester being fully online, many Discord servers popped up, some with thousands of members, and the lack of a verification system has become a concern.
 
 The bot code was therefore rewritten to be fully modularized; every aspect that is necessary to control is located within the *config.json* file created by the bot.
 
