@@ -36,9 +36,9 @@ Here is a full list of the commands the bot offers:
 # Contributors
 Notable contributors are listed below:
 
-aabuelazm: wrote the Dockerfile for the bot so it can be easily deployed to any Docker-running server as a VM.
+[aabuelazm](https://github.com/aabuelazm): wrote the Dockerfile for the bot so it can be easily deployed to any Docker-running server as a VM.
 
-MiningMark48: wrote the initial draft of the bot code and the *reactor.py* and *util/data/* handlers to work with sqlalchemy.
+[MiningMark48](https://github.com/MiningMark48): wrote the initial draft of the bot code and the *reactor.py* and *util/data/* handlers to work with sqlalchemy.
 
 # License
 The code for this repo is licensed under the GPL3. More information can be found in the *LICENSE* file in this repo.
