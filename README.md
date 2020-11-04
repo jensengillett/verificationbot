@@ -21,11 +21,11 @@ A bot token needs to be created to run this bot. The Discord Developers Portal i
 
 # Commands
 Here is a full list of the commands the bot offers:
-- email <email@email.com>: Sends a verification email to a provided email account.
-- verify <token>: Uses the token sent to the email account to verify the user.
-- prune <x>: (Manage Server only) Prunes the most recent x amount of messages in a channel.
-- reactoradd <messageid> <roleid> <emote>: (Manage Server only) Adds a reactor to a message.
-- reactordelete <messageid>: (Manage Server only) Removes all reactors from a message.
+- email [email@email.com]: Sends a verification email to a provided email account.
+- verify [token]: Uses the token sent to the email account to verify the user.
+- prune [x]: (Manage Server only) Prunes the most recent x amount of messages in a channel.
+- reactoradd [messageid] [roleid] [emote]: (Manage Server only) Adds a reactor to a message.
+- reactordelete [messageid]: (Manage Server only) Removes all reactors from a message.
 - reactorget: (Manage Server only) Gets all reactors in the server.
 - reactorclearall: (Manage Server only) Removes all reactors in the server.
 
