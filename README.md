@@ -21,7 +21,9 @@ A bot token needs to be created to run this bot. The Discord Developers Portal i
 
 # Contributors
 Notable contributors are listed below:
+
 aabuelazm: wrote the Dockerfile for the bot so it can be easily deployed to any Docker-running server as a VM.
+
 MiningMark48: wrote the initial draft of the bot code and the *reactor.py* and *util/data/* handlers to work with sqlalchemy.
 
 # License
