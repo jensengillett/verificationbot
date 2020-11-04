@@ -19,10 +19,13 @@ Upon first run of *bot.py*, the bot will notice the missing config.json file and
 
 A bot token needs to be created to run this bot. The Discord Developers Portal is linked here: https://discord.com/developers/applications. Google is your friend. The permissions required for this bot are *Manage Server*, *Manage Roles*, *View Channels*, *Send Messages*, *Manage Messages*, *Read Message History*, and *Add Reactions*. 
 
-# License
-The code for this repo is licensed under the GPL3. More information can be found in the *LICENSE* file in this repo.
-
 # Contributors
 Notable contributors are listed below:
 aabuelazm: wrote the Dockerfile for the bot so it can be easily deployed to any Docker-running server as a VM.
 MiningMark48: wrote the initial draft of the bot code and the *reactor.py* and *util/data/* handlers to work with sqlalchemy.
+
+# License
+The code for this repo is licensed under the GPL3. More information can be found in the *LICENSE* file in this repo.
+
+# Notice
+This repo is being given very limited support. If Discord's API changes suddenly, do not expect an update for this bot immediatley. Major security patches and API changes may result in an update, or may result in support being dropped. If support is dropped indefinitley, this file will be updated to note that the bot is now deprecated.
