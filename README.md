@@ -25,6 +25,7 @@ A bot token needs to be created to run this bot. The Discord Developers Portal i
 
 # Commands
 Here is a full list of the commands the bot offers:
+- vhelp: Displays an information message about how to use the email and verify commands.
 - email [email@email.com]: Sends a verification email to a provided email account.
 - verify [token]: Uses the token sent to the email account to verify the user.
 - prune [x]: (Manage Server only) Prunes the most recent x amount of messages in a channel.
