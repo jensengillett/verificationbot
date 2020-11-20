@@ -1,4 +1,3 @@
-import json
 import os.path as osp
 import smtplib
 import ssl
@@ -8,118 +7,73 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import errors as cmderr
 
+from util.config import BotConfig
 from util.data.guild_data import GuildData  # for reactors
-
 
 print("Starting...")
 
-
-# Initialize the variables to hold config data. DO NOT MODIFY THESE PRESETS! Use the config.json file instead.
-# If you don't have a config.json file created yet, don't panic! Run the bot.py file and one will automatically be created.
-bot_token = "bot.token" 				# The Discord bot token being used. Do not share this!
-bot_key = "$"							# The command prefix used by the bot. Defaults to '$'.
-role = "role_name"						# The role given to members who successfully verify.
-verify_domain = "email.com"				# The email domain checked against (i.e., for a gmail account would be gmail.com).
-email_from = "email@email.com"			# The email account used by the bot to send emails.
-email_password = "password"				# The password for the email account. Required to log in.
-email_subject = "Verify Email"			# The subject of emails being sent by the bot.
-email_server = "smtp.gmail.com"			# The SMTP server emails are sent from. The Gmail one is provided.
-email_port = "465"						# The port of the SMTP server above. The Gmail one is provided.
-channel_id = 1234567890					# The channel id for the verification channel.
-notify_id = 1234567890					# The channel id for a channel for bot alerts (i.e. a mod-only channel)
-used_emails = "used_emails.txt"			# The filename for the file that stores previously used emails.
-warn_emails = "exchange_emails.txt"		# The filename for a file (not needed) for alerting mods if used.
-admin_id = 1234567890					# The user id for a user to ping if an email is already used.
-author_name = "Student"					# The name sent addressing the person in the email
-moderator_email = "email@email.com"		# The moderator email to contact in the sent email
-
-
 current_dir = osp.dirname(__file__)  # grab the current system directory on an os-independent level
 data_path = "data"  # folder name
-config_name = "config.json"  # config file name
+config_name = "config.toml"  # config file name
 
 # Uncomment the line below (and comment the line below it) if you want to use the data folder to store the config file.
-#config_path = osp.join(current_dir, data, config_name)
+# config_path = osp.join(current_dir, data, config_name)
 config_path = config_name
 
-
-#Create a struct to hold json data and associate with variables.
-def_config = {
-	"bot_token": bot_token,
-	"bot_key": bot_key,
-	"role": role,
-	"verify_domain": verify_domain,
-	"email_from": email_from,
-	"email_password": email_password,
-	"email_subject": email_subject,
-	"email_server": email_server,
-	"email_port": email_port,
-	"channel_id": channel_id,
-	"notify_id": notify_id,
-	"used_emails": used_emails,
-	"warn_emails": warn_emails,
-	"admin_id": admin_id,
-	"author_name": author_name,
-	"moderator_email": moderator_email
-}
-
-
-#Create empty lists for currently active tokens, emails, and attempt rejection.
+# Create empty lists for currently active tokens, emails, and attempt rejection.
 token_list = {}
 email_list = {}
 email_attempts = {}
 verify_attempts = {}
 
-
-#Load new intents system. This is required for the new reactors functionality.
+# Load new intents system. This is required for the new reactors functionality.
 intents = discord.Intents.default()
 intents.guilds = True
 intents.members = True
 intents.messages = True
 intents.reactions = True
 
-
-#Start the bot functions.
+# Start the bot functions.
 do_run = True
 
+# Start config loading from disk.
+try:
+	print("Loading config...")
+	config = BotConfig(config_path)
+	config_data = config.data
 
-#Start config loading from disk.
-print("Loading config...")
-if osp.isfile(config_path):
-	with open(config_path, 'r') as file:
-		data = json.load(file)
-		bot_token = data["bot_token"]
-		bot_key = data["bot_key"]
-		role = data["role"]
-		verify_domain = data["verify_domain"]
-		email_from = data["email_from"]
-		email_password = data["email_password"]
-		email_subject = data["email_subject"]
-		email_server = data["email_server"]
-		email_port = data["email_port"]
-		channel_id = data["channel_id"]
-		notify_id = data["notify_id"]
-		used_emails = data["used_emails"]
-		warn_emails = data["warn_emails"]
-		admin_id = data["admin_id"]
-		author_name = data["author_name"]
-		moderator_email = data["moderator_email"]
-		print("Config loaded.")
-else:
-	with open(config_path, 'w') as file:
-		print("Config file not found, creating...")
-		json.dump(def_config, file, indent=4)  # This creates a blank json file for storing the config.
-		print("Config file created.")
-		do_run = False  # Bot shuts down to allow the config to be written.
+	bot_data = config_data["bot"]
+	bot_token = bot_data["token"]
+	bot_key = bot_data["key"]
+	used_emails = bot_data["used_emails"]
+	warn_emails = bot_data["warn_emails"]
+	moderator_email = bot_data["moderator_email"]
 
+	email_data = config_data["email"]
+	verify_domain = email_data["domain"]
+	email_from = email_data["from"]
+	email_password = email_data["password"]
+	email_subject = email_data["subject"]
+	email_server = email_data["server"]
+	email_port = email_data["port"]
+
+	discord_data = config_data["discord"]
+	role = discord_data["server_role"]
+	channel_id = discord_data["channel_id"]
+	notify_id = discord_data["notify_id"]
+	admin_id = discord_data["admin_id"]
+	author_name = discord_data["author_name"]
+
+	do_run = config.do_run
+except KeyError as e:
+	print(f"Config error.\n\tKey Not Loaded: {e}")
+	do_run = False
 
 # From the used_emails filename, load the data from the data folder. This can be commented out if not using a data folder.
 used_emails = osp.join(current_dir, data_path, used_emails)
 
-
 # Set up the bot based on the loaded bot prefix and load the intents system.
 bot = commands.Bot(command_prefix=bot_key, intents=intents)
-
 
 # By default, there's no help command other than vhelp. This is so that it doesn't interfere with other bots using the same prefix.
 bot.remove_command('help')
@@ -163,7 +117,8 @@ async def verify_help(ctx):
 	"""
 	verify_email = ctx.guild.get_channel(channel_id)
 	# The line below contains the verify_help command text output.
-	await ctx.send(f"To use this bot, please use `{bot_key}email netlinkid@{verify_domain}` in {verify_email.mention} to receive an email with a **4 digit verification token.** Replace `netlinkedid@{verify_domain}` with your own email, keeping in mind that the bot only accepts email addresses with `@{verify_domain}` at the end. **Wait for an email to be received** - you can check your UVic Webmail at https://uvic.ca/webmail/. If you don't receive an email after 5 minutes, try using the email command again. **Send the command provided in the email** as a message in the {verify_email.mention} channel to gain access to the rest of the server.\n\n**Send messages in the {verify_email.mention} channel to use this bot's commands, not in a DM.**")
+	await ctx.send(
+		f"To use this bot, please use `{bot_key}email netlinkid@{verify_domain}` in {verify_email.mention} to receive an email with a **4 digit verification token.** Replace `netlinkedid@{verify_domain}` with your own email, keeping in mind that the bot only accepts email addresses with `@{verify_domain}` at the end. **Wait for an email to be received** - you can check your UVic Webmail at https://uvic.ca/webmail/. If you don't receive an email after 5 minutes, try using the email command again. **Send the command provided in the email** as a message in the {verify_email.mention} channel to gain access to the rest of the server.\n\n**Send messages in the {verify_email.mention} channel to use this bot's commands, not in a DM.**")
 
 
 # The email command handles all the checks done before an email is sent out alongside the actual email sending.
@@ -210,17 +165,20 @@ async def _email(ctx, arg):
 			print("Used emails file hasn't been created yet, continuing...")
 
 		try:
-			with open(warn_emails, 'r') as file:  # Checks the warning email file to notify moderators if an email on the list is used. For example, a list of professor emails could be loaded.
+			with open(warn_emails,
+					  'r') as file:  # Checks the warning email file to notify moderators if an email on the list is used. For example, a list of professor emails could be loaded.
 				if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
 					sendIn = ctx.guild.get_channel(notify_id)
-					await sendIn.send(f"Alert! Email on warning list used. Discord ID: {ctx.author.mention}, email `{arg}`. Please use https://www.uvic.ca/search/people/index.php to check status.")
+					await sendIn.send(
+						f"Alert! Email on warning list used. Discord ID: {ctx.author.mention}, email `{arg}`. Please use https://www.uvic.ca/search/people/index.php to check status.")
 		except FileNotFoundError:
 			print("Warning list file not found, ignoring rest.")
 
-		#This is a bit of a hacky way to do an email attempt checking system. If someone tries to repeatedly use the email command, they will be blacklisted from further attempts.
+		# This is a bit of a hacky way to do an email attempt checking system. If someone tries to repeatedly use the email command, they will be blacklisted from further attempts.
 		try:
 			if email_attempts[ctx.author.id] >= 5:
-				await ctx.send(f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a moderator for assistance with verifying if this is in error. Thanks!")
+				await ctx.send(
+					f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a moderator for assistance with verifying if this is in error. Thanks!")
 				sendIn = ctx.guild.get_channel(notify_id)
 				await sendIn.send(f"Alert! User {ctx.author.mention} has exceeded the amount of `!email` command uses.")
 				return
@@ -283,7 +241,8 @@ async def _verify(ctx, arg):
 				await ctx.send(
 					f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a moderator for assistance with verifying if this is in error. Thanks!")
 				sendIn = ctx.guild.get_channel(notify_id)
-				await sendIn.send(f"Alert! User {ctx.author.mention} has exceeded the amount of `!verify` command uses.")
+				await sendIn.send(
+					f"Alert! User {ctx.author.mention} has exceeded the amount of `!verify` command uses.")
 				return
 		except:
 			print("")
