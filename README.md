@@ -45,4 +45,4 @@ Notable contributors are listed below:
 The code for this repo is licensed under the GPL3. More information can be found in the *LICENSE* file in this repo.
 
 # Notice
-This repo is being given very limited support. If Discord's API changes suddenly, do not expect an update for this bot immediatley. Major security patches and API changes may result in an update, or may result in support being dropped. If support is dropped indefinitley, this file will be updated to note that the bot is now deprecated.
+This repo is being given very limited support. If Discord's API changes suddenly, do not expect an update for this bot immediately. Major security patches and API changes may result in an update, or may result in support being dropped. If support is dropped indefinitely, this file will be updated to note that the bot is now deprecated.
