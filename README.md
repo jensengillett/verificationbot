@@ -19,7 +19,7 @@ Deploy the bot to whichever server you plan to use; if that's a Docker server, t
 
 Install the requirements for the bot by opening a command prompt in the bot folder and running *pip install -r requirements.txt* . This will install the dependencies for bot operation.
 
-Upon first run of *bot.py*, the bot will notice the missing config.json file and create one for you. This file is the only file that needs to be edited for operation. Descriptions of each setting are availible at the top of the *bot.py* script.
+Upon first run of *bot.py*, the bot will notice the missing config.toml file and create one for you. This file is the only file that needs to be edited for operation. Descriptions of each setting are available in the *demo_config.toml* file.
 
 A bot token needs to be created to run this bot. The Discord Developers Portal is linked here: https://discord.com/developers/applications. Google is your friend. The permissions required for this bot are *Manage Server*, *Manage Roles*, *View Channels*, *Send Messages*, *Manage Messages*, *Read Message History*, and *Add Reactions*. 
 
