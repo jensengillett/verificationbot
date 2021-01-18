@@ -15,6 +15,7 @@ class BotConfig:
                 'moderator_email': 'discordauthentemail@gmail.com'
             },
             'email': {
+                'sample': 'accountid',
                 'domain': 'gmail.com',
                 'from': 'example@gmail.com',
                 'password': 'password',

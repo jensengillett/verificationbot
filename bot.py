@@ -50,6 +50,7 @@ try:
 	moderator_email = bot_data["moderator_email"]
 
 	email_data = config_data["email"]
+	sample_username = email_data["sample"]
 	verify_domain = email_data["domain"]
 	email_from = email_data["from"]
 	email_password = email_data["password"]
@@ -118,7 +119,7 @@ async def verify_help(ctx):
 	verify_email = ctx.guild.get_channel(channel_id)
 	# The line below contains the verify_help command text output.
 	await ctx.send(
-		f"To use this bot, please use `{bot_key}email netlinkid@{verify_domain}` in {verify_email.mention} to receive an email with a **4 digit verification token.** Replace `netlinkedid@{verify_domain}` with your own email, keeping in mind that the bot only accepts email addresses with `@{verify_domain}` at the end. **Wait for an email to be received** - you can check your UVic Webmail at https://uvic.ca/webmail/. If you don't receive an email after 5 minutes, try using the email command again. **Send the command provided in the email** as a message in the {verify_email.mention} channel to gain access to the rest of the server.\n\n**Send messages in the {verify_email.mention} channel to use this bot's commands, not in a DM.**")
+		f"To use this bot, please use `{bot_key}email {sample_username}@{verify_domain}` in {verify_email.mention} to receive an email with a **4 digit verification token.** Replace `{sample_username}@{verify_domain}` with your own email, keeping in mind that the bot only accepts email addresses with `@{verify_domain}` at the end. **Wait for an email to be received** - you can check your UVic Webmail at https://uvic.ca/webmail/. If you don't receive an email after 5 minutes, try using the email command again. **Send the command provided in the email** as a message in the {verify_email.mention} channel to gain access to the rest of the server.\n\n**Send messages in the {verify_email.mention} channel to use this bot's commands, not in a DM.**")
 
 
 # The email command handles all the checks done before an email is sent out alongside the actual email sending.
@@ -147,11 +148,11 @@ async def _email(ctx, arg):
 			dm = "nou"
 			await ctx.send("Error! Please do not use the + character in your email address!")
 
-		blacklist_names = ["netlinkid", "v00"]  # If any email begins with one of these, it's invalid
+		blacklist_names = [sample_username]  # If any email begins with one of these, it's invalid
 
 		if any(arg.lower().startswith(name.lower()) for name in blacklist_names):
 			await ctx.send(
-				f"{ctx.author.mention} Use your own NetLinkID (your username in Brightspace), not the default one. Please try again with your own email.")
+				f"{ctx.author.mention} Use your own email, not the sample one. Please try again with your own email.")
 			return
 
 		try:

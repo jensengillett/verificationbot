@@ -6,6 +6,7 @@ warn_emails = "exchange_emails.txt"                 # The filename for a file (n
 moderator_email = "discordauthentemail@gmail.com"   # The moderator email to contact in the sent email
 
 [email]
+sample = "accountid"                                # The sample username given by vhelp. Will also be blacklisted.
 domain = "gmail.com"                                # The email domain checked against (i.e. Gmail would be gmail.com).
 from = "example@gmail.com"                          # The email account used by the bot to send emails.
 password = "password"                               # The password for the email account. Required to login.
