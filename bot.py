@@ -1,7 +1,7 @@
 import os.path as osp
 import smtplib
 import ssl
-from random import randint
+import random
 
 import discord
 from discord.ext import commands
@@ -69,6 +69,9 @@ try:
 except KeyError as e:
 	print(f"Config error.\n\tKey Not Loaded: {e}")
 	do_run = False
+
+# Seed the random number generator from the bot token.
+random.seed(bot_token)
 
 # From the used_emails filename, load the data from the data folder. This can be commented out if not using a data folder.
 used_emails = osp.join(current_dir, data_path, used_emails)
@@ -190,7 +193,7 @@ async def _email(ctx, arg):
 			await ctx.send("Sending verification email...")
 			with smtplib.SMTP_SSL(email_server, email_port, context=ssl.create_default_context()) as server:
 				server.login(email_from, email_password)
-				token = randint(1000, 9999)
+				token = random.randint(1000, 9999)
 				token_list[ctx.author.id] = str(token)
 				email_list[ctx.author.id] = arg
 				verify_email = ctx.guild.get_channel(channel_id)
