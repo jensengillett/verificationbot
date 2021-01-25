@@ -1,9 +1,10 @@
 FROM python:3
 WORKDIR /app
 
-# allows better caching of image layers
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install discord.py
+RUN pip install varint
+RUN pip install sqlalchemy
+RUN pip install toml
 
 COPY . /app
 
