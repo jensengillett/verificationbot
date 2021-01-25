@@ -1,7 +1,7 @@
 import os.path as osp
 import smtplib
 import ssl
-from random import randint
+import random
 
 import discord
 from discord.ext import commands
@@ -50,6 +50,7 @@ try:
 	moderator_email = bot_data["moderator_email"]
 
 	email_data = config_data["email"]
+	sample_username = email_data["sample"]
 	verify_domain = email_data["domain"]
 	email_from = email_data["from"]
 	email_password = email_data["password"]
@@ -68,6 +69,9 @@ try:
 except KeyError as e:
 	print(f"Config error.\n\tKey Not Loaded: {e}")
 	do_run = False
+
+# Seed the random number generator from the bot token.
+random.seed(bot_token)
 
 # From the used_emails filename, load the data from the data folder. This can be commented out if not using a data folder.
 used_emails = osp.join(current_dir, data_path, used_emails)
@@ -118,7 +122,13 @@ async def verify_help(ctx):
 	verify_email = ctx.guild.get_channel(channel_id)
 	# The line below contains the verify_help command text output.
 	await ctx.send(
-		f"To use this bot, please use `{bot_key}email netlinkid@{verify_domain}` in {verify_email.mention} to receive an email with a **4 digit verification token.** Replace `netlinkedid@{verify_domain}` with your own email, keeping in mind that the bot only accepts email addresses with `@{verify_domain}` at the end. **Wait for an email to be received** - you can check your UVic Webmail at https://uvic.ca/webmail/. If you don't receive an email after 5 minutes, try using the email command again. **Send the command provided in the email** as a message in the {verify_email.mention} channel to gain access to the rest of the server.\n\n**Send messages in the {verify_email.mention} channel to use this bot's commands, not in a DM.**")
+		f"To use this bot, please use `{bot_key}email {sample_username}@{verify_domain}` in {verify_email.mention} \
+		to receive an email with a **4 digit verification token.** Replace `{sample_username}@{verify_domain}` with \
+		your own email, keeping in mind that the bot only accepts email addresses with `@{verify_domain}` at the end. \
+		**Wait for an email to be received**. If you don't receive an email after 5 minutes, try using the email \
+		command again. **Send the command provided in the email** as a message in the {verify_email.mention} channel \
+		to gain access to the rest of the server.\n\n**Send messages in the {verify_email.mention} channel to use this \
+		bot's commands, not in a DM.**")
 
 
 # The email command handles all the checks done before an email is sent out alongside the actual email sending.
@@ -147,11 +157,11 @@ async def _email(ctx, arg):
 			dm = "nou"
 			await ctx.send("Error! Please do not use the + character in your email address!")
 
-		blacklist_names = ["netlinkid", "v00"]  # If any email begins with one of these, it's invalid
+		blacklist_names = [sample_username]  # If any email begins with one of these, it's invalid
 
 		if any(arg.lower().startswith(name.lower()) for name in blacklist_names):
 			await ctx.send(
-				f"{ctx.author.mention} Use your own NetLinkID (your username in Brightspace), not the default one. Please try again with your own email.")
+				f"{ctx.author.mention} Use your own email, not the sample one. Please try again with your own email.")
 			return
 
 		try:
@@ -159,7 +169,8 @@ async def _email(ctx, arg):
 				if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
 					admin = await bot.fetch_user(admin_id)
 					await ctx.send(
-						f"Error! That email has already been used! If you believe this is an error or are trying to re-verify, please contact {admin.mention} in this channel or through direct message. Thanks!")
+						f"Error! That email has already been used! If you believe this is an error or are trying to \
+						re-verify, please contact {admin.mention} in this channel or through direct message. Thanks!")
 					return
 		except FileNotFoundError:
 			print("Used emails file hasn't been created yet, continuing...")
@@ -170,7 +181,7 @@ async def _email(ctx, arg):
 				if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
 					sendIn = ctx.guild.get_channel(notify_id)
 					await sendIn.send(
-						f"Alert! Email on warning list used. Discord ID: {ctx.author.mention}, email `{arg}`. Please use https://www.uvic.ca/search/people/index.php to check status.")
+						f"Alert! Email on warning list used. Discord ID: {ctx.author.mention}, email `{arg}`.")
 		except FileNotFoundError:
 			print("Warning list file not found, ignoring rest.")
 
@@ -178,7 +189,8 @@ async def _email(ctx, arg):
 		try:
 			if email_attempts[ctx.author.id] >= 5:
 				await ctx.send(
-					f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a moderator for assistance with verifying if this is in error. Thanks!")
+					f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a \
+					moderator for assistance with verifying if this is in error. Thanks!")
 				sendIn = ctx.guild.get_channel(notify_id)
 				await sendIn.send(f"Alert! User {ctx.author.mention} has exceeded the amount of `!email` command uses.")
 				return
@@ -189,11 +201,14 @@ async def _email(ctx, arg):
 			await ctx.send("Sending verification email...")
 			with smtplib.SMTP_SSL(email_server, email_port, context=ssl.create_default_context()) as server:
 				server.login(email_from, email_password)
-				token = randint(1000, 9999)
+				token = random.randint(1000, 9999)
 				token_list[ctx.author.id] = str(token)
 				email_list[ctx.author.id] = arg
 				verify_email = ctx.guild.get_channel(channel_id)
-				message_text = f"Hello {author_name},\n\nThe command to use in {verify_email.name} is: \n\n{bot_key}verify {token}\n\nMake sure you paste that entire line into the chat, and press enter to send the message. \n\nThank you for joining our Discord server! \n\nThis message was sent automatically by a bot. If you did not request this message, please contact {moderator_email} to report this incident."
+				message_text = f"Hello {author_name},\n\nThe command to use in {verify_email.name} is: \
+				\n\n{bot_key}verify {token}\n\nMake sure you paste that entire line into the chat, and press enter to \
+				send the message. \n\nThank you for joining our Discord server! \n\nThis message was sent automatically \
+				by a bot. If you did not request this message, please contact {moderator_email} to report this incident."
 				message = f"Subject: {email_subject}\n\n{message_text}"
 				server.sendmail(email_from, arg, message)
 				server.quit()
@@ -231,7 +246,8 @@ async def _verify(ctx, arg):
 			with open(used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
 				if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
 					await ctx.send(
-						f"Error! That email has already been used! If you believe this is an error or are trying to re-verify, please contact a moderator in this channel or through direct message. Thanks!")
+						f"Error! That email has already been used! If you believe this is an error or are trying to \
+						re-verify, please contact a moderator in this channel or through direct message. Thanks!")
 					return
 		except FileNotFoundError:
 			print("Used emails file hasn't been created yet, continuing...")
@@ -239,7 +255,8 @@ async def _verify(ctx, arg):
 		try:
 			if verify_attempts[ctx.author.id] >= 5:
 				await ctx.send(
-					f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a moderator for assistance with verifying if this is in error. Thanks!")
+					f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a \
+					moderator for assistance with verifying if this is in error. Thanks!")
 				sendIn = ctx.guild.get_channel(notify_id)
 				await sendIn.send(
 					f"Alert! User {ctx.author.mention} has exceeded the amount of `!verify` command uses.")
@@ -253,6 +270,8 @@ async def _verify(ctx, arg):
 				await ctx.author.add_roles(discord.utils.get(ctx.message.author.guild.roles, name=role))
 				with open(used_emails, 'a') as file:  # Writes used emails to file for verification
 					file.write(f"{email_list[ctx.author.id]}\n")
+			else:
+				await ctx.send(f"Invalid token {ctx.author.mention}!")
 				if verify_attempts:
 					if ctx.author.id in verify_attempts:
 						verify_attempts[ctx.author.id] += 1
@@ -260,8 +279,7 @@ async def _verify(ctx, arg):
 						verify_attempts[ctx.author.id] = 1
 				else:
 					verify_attempts[ctx.author.id] = 1
-			else:
-				await ctx.send(f"Invalid token {ctx.author.mention}!")
+
 		else:
 			print("Array does not exist yet! Verify will return nothing!")
 

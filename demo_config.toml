@@ -6,6 +6,7 @@ warn_emails = "exchange_emails.txt"                 # The filename for a file (n
 moderator_email = "discordauthentemail@gmail.com"   # The moderator email to contact in the sent email
 
 [email]
+sample = "accountid"                                # The sample username given by vhelp. Will also be blacklisted.
 domain = "gmail.com"                                # The email domain checked against (i.e. Gmail would be gmail.com).
 from = "example@gmail.com"                          # The email account used by the bot to send emails.
 password = "password"                               # The password for the email account. Required to login.
@@ -14,7 +15,7 @@ server = "smtp.gmail.com"                           # The SMTP server emails are
 port = "465"                                        # The port of the SMTP server above. The Gmail one is provided.
 
 [discord]
-server_role = "email_verify"                        # The tole given to members who successfully verify.
+server_role = "email_verify"                        # The role given to members who successfully verify.
 channel_id = 12341234123412                         # The channel id for the verification channel.
 notify_id = 12341234123412                          # The channel id for a channel for bot alerts (i.e. mod-only)
 admin_id = 12341234123412                           # The user if for a user to ping if an email is already used
