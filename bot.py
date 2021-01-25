@@ -117,7 +117,12 @@ async def verify_help(ctx):
 	verify_email = ctx.guild.get_channel(channel_id)
 	# The line below contains the verify_help command text output.
 	await ctx.send(
-		f"To use this bot, please use `{bot_key}email {sample_username}@{verify_domain}` in {verify_email.mention} to receive an email with a **4 digit verification token.** Replace `{sample_username}@{verify_domain}` with your own email, keeping in mind that the bot only accepts email addresses with `@{verify_domain}` at the end. **Wait for an email to be received**. If you don't receive an email after 5 minutes, try using the email command again. **Send the command provided in the email** as a message in the {verify_email.mention} channel to gain access to the rest of the server.\n\n**Send messages in the {verify_email.mention} channel to use this bot's commands, not in a DM.**")
+		f"To use this bot, please use `{bot_key}email {sample_username}@{verify_domain}` in {verify_email.mention} "
+		f"to receive an email with a **4 digit verification token.** Replace `{sample_username}@{verify_domain}` with"
+		f" your own email, keeping in mind that the bot only accepts email addresses with `@{verify_domain}` at the end."
+		f" **Wait for an email to be received**. If you don't receive an email after 5 minutes, try using the email command again."
+		f" **Send the command provided in the email** as a message in the {verify_email.mention} channel to gain access to the rest"
+		f" of the server.\n\n**Send messages in the {verify_email.mention} channel to use this bot's commands, not in a DM.**")
 
 
 # The email command handles all the checks done before an email is sent out alongside the actual email sending.
