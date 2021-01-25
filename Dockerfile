@@ -1,11 +1,9 @@
 FROM python:3
-
-RUN pip install discord.py
-RUN pip install varint
-RUN pip install sqlalchemy
-RUN pip install toml
-
 WORKDIR /app
+
+# allows better caching of image layers
+COPY requirements.txt /
+RUN pip install -r requirements.txt
 
 COPY . /app
 
