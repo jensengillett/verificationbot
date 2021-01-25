@@ -257,6 +257,8 @@ async def _verify(ctx, arg):
 				await ctx.author.add_roles(discord.utils.get(ctx.message.author.guild.roles, name=role))
 				with open(used_emails, 'a') as file:  # Writes used emails to file for verification
 					file.write(f"{email_list[ctx.author.id]}\n")
+			else:
+				await ctx.send(f"Invalid token {ctx.author.mention}!")
 				if verify_attempts:
 					if ctx.author.id in verify_attempts:
 						verify_attempts[ctx.author.id] += 1
@@ -264,8 +266,7 @@ async def _verify(ctx, arg):
 						verify_attempts[ctx.author.id] = 1
 				else:
 					verify_attempts[ctx.author.id] = 1
-			else:
-				await ctx.send(f"Invalid token {ctx.author.mention}!")
+
 		else:
 			print("Array does not exist yet! Verify will return nothing!")
 
