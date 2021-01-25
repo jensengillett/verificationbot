@@ -14,7 +14,7 @@ ENV used_emails
 ENV warn_emails
 ENV moderator_email
 
-#email
+# email
 ENV sample
 ENV domain
 ENV from
@@ -23,13 +23,14 @@ ENV subject
 ENV server
 ENV port
 
-#discord
+# discord
 ENV server_role
 ENV channel_id
 ENV notify_id
 ENV admin_id
 ENV author_name
 
+# Creates the config file
 RUN echo -e "[bot]\n\
 token = \"$token\"\n\
 key = \"$key\"\n\
