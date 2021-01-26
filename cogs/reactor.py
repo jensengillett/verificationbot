@@ -3,6 +3,8 @@ from discord.ext import commands
 
 from sqlalchemy.exc import OperationalError
 
+from util.data.guild_data import GuildData
+
 
 class Reactor(commands.Cog):
 	def __init__(self, bot):
@@ -22,11 +24,10 @@ class Reactor(commands.Cog):
 
 		GuildData(str(ctx.guild.id)).reactors.insert(message_id, role_id, emoji)
 
-		await ctx.send(f'Reactor has been set.', delete_after=10)
+		await ctx.send('Reactor has been set.', delete_after=10)
 
 		msg = await ctx.fetch_message(message_id)
 		await msg.add_reaction(emoji)
-
 
 	@commands.command(name="reactorget", aliases=["reactorlist", "Reactorget", "Reactorlist"])
 	@commands.has_permissions(manage_guild=True)
@@ -50,8 +51,7 @@ class Reactor(commands.Cog):
 			for part in msg_parts:
 				await ctx.send(f"```{part}```")
 		else:
-			await ctx.send(f'No reactors currently set!', delete_after=10)
-
+			await ctx.send('No reactors currently set!', delete_after=10)
 
 	@commands.command(name="reactordelete", aliases=["reactorclear", "Reactordelete", "Reactorclear"])
 	@commands.has_permissions(manage_guild=True)
@@ -74,7 +74,6 @@ class Reactor(commands.Cog):
 		else:
 			await ctx.send("Reactor not found.", delete_after=10)
 
-
 	@commands.command(name="reactorclearall", aliases=["reactordeleteall", "Reactorclearall", "Reactordeleteall"])
 	@commands.has_permissions(manage_guild=True)
 	@commands.cooldown(1, 2, commands.BucketType.user)
@@ -87,14 +86,13 @@ class Reactor(commands.Cog):
 
 		await ctx.send("All reactors deleted.")
 
-
 	@commands.Cog.listener("on_raw_reaction_add")
 	async def on_raw_reaction_add(self, payload):
-		await reaction_handle(payload, add_mode=True)
+		await self.reaction_handle(payload, add_mode=True)
 
 	@commands.Cog.listener("on_raw_reaction_remove")
 	async def on_raw_reaction_remove(self, payload):
-		await reaction_handle(payload, add_mode=False)
+		await self.reaction_handle(payload, add_mode=False)
 
 	@commands.Cog.listener("on_raw_message_delete")
 	async def on_raw_message_delete(self, payload):
@@ -107,14 +105,13 @@ class Reactor(commands.Cog):
 
 			reactors.delete(payload.message_id)
 		except (OperationalError, NameError):
-			print ("Unable to load SQLAlchemy Database, skipping reactor check...")	
-
+			print("Unable to load SQLAlchemy Database, skipping reactor check...")
 
 	async def reaction_handle(self, payload, add_mode: bool):
-		guild = bot.get_guild(payload.guild_id)
+		guild = self.bot.get_guild(payload.guild_id)
 		user = payload.member if payload.member else await guild.fetch_member(payload.user_id)
 
-		if user == bot.user:
+		if user == self.bot.user:
 			return
 
 		reactors = GuildData(str(guild.id)).reactors.fetch_all()
@@ -139,4 +136,4 @@ class Reactor(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(Reactor(bot))
+	bot.add_cog(Reactor(bot))

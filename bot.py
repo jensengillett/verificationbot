@@ -8,7 +8,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import errors as cmderr
 
-from util.data.guild_data import GuildData  # for reactors
+# from util.data.guild_data import GuildData  # for reactors
 
 print("Starting...")
 
@@ -53,6 +53,7 @@ bot = commands.Bot(command_prefix=bot_key, intents=intents)
 # By default, there's no help command other than vhelp. This is so that it doesn't interfere with other bots using the same prefix.
 bot.remove_command('help')
 
+
 # Update discord presence when everything is successfully loaded.
 @bot.event
 async def on_ready():
@@ -71,16 +72,16 @@ async def on_message(message):
 # Loads extensions before running bot
 if __name__ == "__main__":
 
-    count = 0
-    for extension in extensions:
-        try:
-            bot.load_extension(f"cogs.{extension}")
-            print(f"Cog | Loaded {extension}")
-            count += 1
-        except Exception as error:
-            print(f"{extension} cannot be loaded. \n\t[{error}]")
+	count = 0
+	for extension in extensions:
+		try:
+			bot.load_extension(f"cogs.{extension}")
+			print(f"Cog | Loaded {extension}")
+			count += 1
+		except Exception as error:
+			print(f"{extension} cannot be loaded. \n\t[{error}]")
 
-    print(f"Loaded {count}/{len(extensions)} cogs")
+	print(f"Loaded {count}/{len(extensions)} cogs")
 
 if do_run:
 	bot.run(bot_token)
