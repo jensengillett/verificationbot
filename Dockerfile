@@ -6,8 +6,6 @@ RUN pip install varint
 RUN pip install sqlalchemy
 RUN pip install toml
 
-RUN mkdir data
-
 # A bunch of environment variables, will be used in Docker Compose
 # bot
 ENV token=
