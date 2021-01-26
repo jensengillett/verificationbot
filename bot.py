@@ -6,7 +6,6 @@ import random
 
 import discord
 from discord.ext import commands
-from discord.ext.commands import errors as cmderr
 
 # from util.data.guild_data import GuildData  # for reactors
 
