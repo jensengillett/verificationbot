@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands import errors as cmderr
 
 
 class Errors(commands.Cog):
@@ -22,4 +23,4 @@ class Errors(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(Errors(bot))
+	bot.add_cog(Errors(bot))
