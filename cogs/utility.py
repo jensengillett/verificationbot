@@ -11,9 +11,8 @@ class Utility(commands.Cog):
 	@commands.guild_only()
 	async def prune(self, ctx, amt: int):
 		"""Bulk delete messages (up to 100)"""
-		if not amt > 0 and amt <= 100:  # TODO: Clamp this value
-			await ctx.send(f'Amount must be between **0** and **100**, you entered `{amt}`')
-			return
+
+		amt = max(min(amt, 100), 0)  # Clamp between 0 and 100
 		await ctx.message.delete()
 		await ctx.channel.purge(limit=amt)
 		msg = await ctx.send(f'Pruned `{amt}` messages.')
