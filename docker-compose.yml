@@ -38,4 +38,4 @@ services:
       # The name sent addressing the person in the email
       - author_name=
     volumes:
-      - ./data:/data
+      - ./data:/app/data
