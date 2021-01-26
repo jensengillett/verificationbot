@@ -35,7 +35,7 @@ Here is a full list of the commands the bot offers:
 # Contributors
 Notable contributors are listed below:
 
-[aabuelazm](https://github.com/aabuelazm): wrote the Dockerfile for the bot and updated bot.py to use environment variables so it can be easily deployed to any Docker-running server as a VM. Basically made it work in Docker.
+[aabuelazm](https://github.com/aabuelazm): wrote the Dockerfile for the bot and updated bot.py to use environment variables so it can be easily deployed to any Docker-running server as a container. Basically made it work in Docker.
 
 [MiningMark48](https://github.com/MiningMark48): wrote the initial draft of the bot code, the *reactor.py* and *util/data/* handlers to work with sqlalchemy, and changed the config system to use TOML.
 
