@@ -7,8 +7,6 @@ import random
 import discord
 from discord.ext import commands
 
-# from util.data.guild_data import GuildData  # for reactors
-
 print("Starting...")
 
 current_dir = osp.dirname(__file__)  # grab the current system directory on an os-independent level
