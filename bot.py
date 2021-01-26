@@ -1,12 +1,14 @@
 import os.path as osp
+import os
+import smtplib
+import ssl
 import random
 
 import discord
 from discord.ext import commands
 from discord.ext.commands import errors as cmderr
 
-from util.config import BotConfig
-# from util.data.guild_data import GuildData  # for reactors
+from util.data.guild_data import GuildData  # for reactors
 
 print("Starting...")
 
@@ -29,33 +31,32 @@ do_run = True
 # Start config loading from disk.
 try:
 	print("Loading config...")
-	config = BotConfig(config_path)
-	config_data = config.data
 
-	bot_data = config_data["bot"]
-	bot_token = bot_data["token"]
-	bot_key = bot_data["key"]
-	used_emails = bot_data["used_emails"]
-	# warn_emails = bot_data["warn_emails"]
-	# moderator_email = bot_data["moderator_email"]
+	bot_token = os.environ["token"]
+	bot_key = os.environ["key"]
+	used_emails = os.environ["used_emails"]
+	warn_emails = os.environ["warn_emails"]
+	moderator_email = os.environ["moderator_email"]
 
-	# email_data = config_data["email"]
-	# sample_username = email_data["sample"]
-	# verify_domain = email_data["domain"]
-	# email_from = email_data["from"]
-	# email_password = email_data["password"]
-	# email_subject = email_data["subject"]
-	# email_server = email_data["server"]
-	# email_port = email_data["port"]
+	sample_username = os.environ["sample"]
+	verify_domain = os.environ["domain"]
+	email_from = os.environ["from"]
+	email_password = os.environ["password"]
+	email_subject = os.environ["subject"]
+	email_server = os.environ["server"]
+	email_port = os.environ["port"]
 
-	# discord_data = config_data["discord"]
-	# role = discord_data["server_role"]
-	# channel_id = discord_data["channel_id"]
-	# notify_id = discord_data["notify_id"]
-	# admin_id = discord_data["admin_id"]
-	# author_name = discord_data["author_name"]
+	role = os.environ["server_role"]
+	channel_id = os.environ["channel_id"]
+	notify_id = os.environ["notify_id"]
+	admin_id = os.environ["admin_id"]
+	author_name = os.environ["author_name"]
 
-	do_run = config.do_run
+	channel_id = int(channel_id)
+	notify_id = int(notify_id)
+	admin_id = int (admin_id)
+
+	do_run = True
 except KeyError as e:
 	print(f"Config error.\n\tKey Not Loaded: {e}")
 	do_run = False
