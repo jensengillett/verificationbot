@@ -118,11 +118,12 @@ async def verify_help(ctx):
 	# The line below contains the verify_help command text output.
 	await ctx.send(
 		f"To use this bot, please use `{bot_key}email {sample_username}@{verify_domain}` in {verify_email.mention} "
-		f"to receive an email with a **4 digit verification token.** Replace `{sample_username}@{verify_domain}` with"
-		f" your own email, keeping in mind that the bot only accepts email addresses with `@{verify_domain}` at the end."
-		f" **Wait for an email to be received**. If you don't receive an email after 5 minutes, try using the email command again."
-		f" **Send the command provided in the email** as a message in the {verify_email.mention} channel to gain access to the rest"
-		f" of the server.\n\n**Send messages in the {verify_email.mention} channel to use this bot's commands, not in a DM.**")
+		f"to receive an email with a **4 digit verification token.** Replace `{sample_username}@{verify_domain}` with "
+		f"your own email, keeping in mind that the bot only accepts email addresses with `@{verify_domain}` at the end. "
+		f"**Wait for an email to be received**. If you don't receive an email after 5 minutes, try using the email "
+		f"command again. **Send the command provided in the email** as a message in the {verify_email.mention} channel "
+		f"to gain access to the rest of the server.\n\n**Send messages in the {verify_email.mention} channel to use this "
+		f"bot's commands, not in a DM.**")
 
 
 # The email command handles all the checks done before an email is sent out alongside the actual email sending.
@@ -163,8 +164,8 @@ async def _email(ctx, arg):
 				if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
 					admin = await bot.fetch_user(admin_id)
 					await ctx.send(
-						f"Error! That email has already been used! If you believe this is an error or are trying to \
-						re-verify, please contact {admin.mention} in this channel or through direct message. Thanks!")
+						f"Error! That email has already been used! If you believe this is an error or are trying to "
+						f"re-verify, please contact {admin.mention} in this channel or through direct message. Thanks!")
 					return
 		except FileNotFoundError:
 			print("Used emails file hasn't been created yet, continuing...")
@@ -183,8 +184,8 @@ async def _email(ctx, arg):
 		try:
 			if email_attempts[ctx.author.id] >= 5:
 				await ctx.send(
-					f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a \
-					moderator for assistance with verifying if this is in error. Thanks!")
+					f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a "
+					f"moderator for assistance with verifying if this is in error. Thanks!")
 				sendIn = ctx.guild.get_channel(notify_id)
 				await sendIn.send(f"Alert! User {ctx.author.mention} has exceeded the amount of `!email` command uses.")
 				return
@@ -199,10 +200,10 @@ async def _email(ctx, arg):
 				token_list[ctx.author.id] = str(token)
 				email_list[ctx.author.id] = arg
 				verify_email = ctx.guild.get_channel(channel_id)
-				message_text = f"Hello {author_name},\n\nThe command to use in {verify_email.name} is: \
-				\n\n{bot_key}verify {token}\n\nMake sure you paste that entire line into the chat, and press enter to \
-				send the message. \n\nThank you for joining our Discord server! \n\nThis message was sent automatically \
-				by a bot. If you did not request this message, please contact {moderator_email} to report this incident."
+				message_text = f"Hello {author_name},\n\nThe command to use in {verify_email.name} is: "
+				f"\n\n{bot_key}verify {token}\n\nMake sure you paste that entire line into the chat, and press enter to "
+				f"send the message. \n\nThank you for joining our Discord server! \n\nThis message was sent automatically "
+				f"by a bot. If you did not request this message, please contact {moderator_email} to report this incident."
 				message = f"Subject: {email_subject}\n\n{message_text}"
 				server.sendmail(email_from, arg, message)
 				server.quit()
@@ -240,8 +241,8 @@ async def _verify(ctx, arg):
 			with open(used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
 				if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
 					await ctx.send(
-						f"Error! That email has already been used! If you believe this is an error or are trying to \
-						re-verify, please contact a moderator in this channel or through direct message. Thanks!")
+						f"Error! That email has already been used! If you believe this is an error or are trying to "
+						f"re-verify, please contact a moderator in this channel or through direct message. Thanks!")
 					return
 		except FileNotFoundError:
 			print("Used emails file hasn't been created yet, continuing...")
@@ -249,8 +250,8 @@ async def _verify(ctx, arg):
 		try:
 			if verify_attempts[ctx.author.id] >= 5:
 				await ctx.send(
-					f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a \
-					moderator for assistance with verifying if this is in error. Thanks!")
+					f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a "
+					f"moderator for assistance with verifying if this is in error. Thanks!")
 				sendIn = ctx.guild.get_channel(notify_id)
 				await sendIn.send(
 					f"Alert! User {ctx.author.mention} has exceeded the amount of `!verify` command uses.")
