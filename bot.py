@@ -13,7 +13,7 @@ from util.data.guild_data import GuildData  # for reactors
 print("Starting...")
 
 current_dir = osp.dirname(__file__)  # grab the current system directory on an os-independent level
-data_path = "data"  # folder name
+data_path = "/data"  # folder name
 
 # Create empty lists for currently active tokens, emails, and attempt rejection.
 token_list = {}
@@ -199,10 +199,7 @@ async def _email(ctx, arg):
 				token_list[ctx.author.id] = str(token)
 				email_list[ctx.author.id] = arg
 				verify_email = ctx.guild.get_channel(channel_id)
-				message_text = f"Hello {author_name},\n\nThe command to use in {verify_email.name} is: "
-				f"\n\n{bot_key}verify {token}\n\nMake sure you paste that entire line into the chat, and press enter to "
-				f"send the message. \n\nThank you for joining our Discord server! \n\nThis message was sent automatically "
-				f"by a bot. If you did not request this message, please contact {moderator_email} to report this incident."
+				message_text = f"Hello {author_name},\n\nThe command to use in {verify_email.name} is: \n\n{bot_key}verify {token}\n\nMake sure you paste that entire line into the chat, and press enter to send the message. \n\nThank you for joining our Discord server! \n\nThis message was sent automatically by a bot. If you did not request this message, please contact {moderator_email} to report this incident."
 				message = f"Subject: {email_subject}\n\n{message_text}"
 				server.sendmail(email_from, arg, message)
 				server.quit()
