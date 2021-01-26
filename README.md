@@ -35,9 +35,11 @@ Here is a full list of the commands the bot offers:
 # Contributors
 Notable contributors are listed below:
 
-[aabuelazm](https://github.com/aabuelazm): wrote the Dockerfile for the bot so it can be easily deployed to any Docker-running server as a VM.
+[aabuelazm](https://github.com/aabuelazm): wrote the Dockerfile for the bot and updated bot.py to use environment variables so it can be easily deployed to any Docker-running server as a VM. Basically made it work in Docker.
 
 [MiningMark48](https://github.com/MiningMark48): wrote the initial draft of the bot code, the *reactor.py* and *util/data/* handlers to work with sqlalchemy, and changed the config system to use TOML.
+
+[MNThimson](https://github.com/MNThomson): hit Shift Tab and fixed the Brute Force Vulnerability.
 
 # License
 The code for this repo is licensed under the GPL3. More information can be found in the *LICENSE* file in this repo.
