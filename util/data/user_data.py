@@ -7,7 +7,7 @@ class UserData:
     def __init__(self, user_id):
         self.user_id = user_id
 
-        engine = create_engine(f'sqlite:///data/user_{self.user_id}.db', echo=False)
+        engine = create_engine(f'sqlite://./data/user_{self.user_id}.db', echo=False)
         meta = MetaData()
         self.conn = engine.connect()
 
