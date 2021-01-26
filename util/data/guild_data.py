@@ -8,7 +8,7 @@ class GuildData:
     def __init__(self, guild_id):
         self.guild_id = guild_id
 
-        engine = create_engine(f'sqlite:///data/guild_{self.guild_id}.db', echo=False)
+        engine = create_engine(f'sqlite://./data/guild_{self.guild_id}.db', echo=False)
         meta = MetaData()
         self.conn = engine.connect()
 
