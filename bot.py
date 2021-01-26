@@ -8,6 +8,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import errors as cmderr
 
+from util.config import BotConfig
 from util.data.guild_data import GuildData  # for reactors
 
 print("Starting...")
