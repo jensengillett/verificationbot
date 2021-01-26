@@ -13,7 +13,7 @@ from util.data.guild_data import GuildData  # for reactors
 print("Starting...")
 
 current_dir = osp.dirname(__file__)  # grab the current system directory on an os-independent level
-data_path = "data"  # folder name
+data_path = "/data"  # folder name
 
 # Create empty lists for currently active tokens, emails, and attempt rejection.
 token_list = {}
