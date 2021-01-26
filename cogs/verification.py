@@ -62,7 +62,6 @@ class Verification(commands.Cog):
 			f"to gain access to the rest of the server.\n\n**Send messages in the {verify_email.mention} channel to use this "
 			f"bot's commands, not in a DM.**")
 
-
 	# The email command handles all the checks done before an email is sent out alongside the actual email sending.
 	# It's very complicated.
 	@commands.command(name="email", aliases=["mail", "send", "Email", "Mail", "Send"])
@@ -99,7 +98,7 @@ class Verification(commands.Cog):
 			try:
 				with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
 					if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
-						admin = await bot.fetch_user(admin_id)
+						admin = await self.bot.fetch_user(self.admin_id)
 						await ctx.send(
 							f"Error! That email has already been used! If you believe this is an error or are trying to "
 							f"re-verify, please contact {admin.mention} in this channel or through direct message. Thanks!")
@@ -108,10 +107,9 @@ class Verification(commands.Cog):
 				print("Used emails file hasn't been created yet, continuing...")
 
 			try:
-				with open(self.warn_emails,
-						'r') as file:  # Checks the warning email file to notify moderators if an email on the list is used. For example, a list of professor emails could be loaded.
+				with open(self.warn_emails, 'r') as file:  # Checks the warning email file to notify moderators if an email on the list is used. For example, a list of professor emails could be loaded.
 					if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
-						sendIn = ctx.guild.get_channel(notify_id)
+						sendIn = ctx.guild.get_channel(self.notify_id)
 						await sendIn.send(
 							f"Alert! Email on warning list used. Discord ID: {ctx.author.mention}, email `{arg}`.")
 			except FileNotFoundError:
@@ -119,11 +117,11 @@ class Verification(commands.Cog):
 
 			# This is a bit of a hacky way to do an email attempt checking system. If someone tries to repeatedly use the email command, they will be blacklisted from further attempts.
 			try:
-				if email_attempts[ctx.author.id] >= 5:
+				if self.email_attempts[ctx.author.id] >= 5:
 					await ctx.send(
 						f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a "
 						f"moderator for assistance with verifying if this is in error. Thanks!")
-					sendIn = ctx.guild.get_channel(notify_id)
+					sendIn = ctx.guild.get_channel(self.notify_id)
 					await sendIn.send(f"Alert! User {ctx.author.mention} has exceeded the amount of `!email` command uses.")
 					return
 			except:
@@ -139,9 +137,9 @@ class Verification(commands.Cog):
 					verify_email = ctx.guild.get_channel(self.channel_id)
 
 					message_text = f"Hello {self.author_name},\n\nThe command to use in {verify_email.name} is: " \
-					f"\n\n{self.bot_key}verify {token}\n\nMake sure you paste that entire line into the chat, and press enter to " \
-					f"send the message. \n\nThank you for joining our Discord server! \n\nThis message was sent automatically " \
-					f"by a bot. If you did not request this message, please contact {self.moderator_email} to report this incident."
+						f"\n\n{self.bot_key}verify {token}\n\nMake sure you paste that entire line into the chat, and press enter to " \
+						f"send the message. \n\nThank you for joining our Discord server! \n\nThis message was sent automatically " \
+						f"by a bot. If you did not request this message, please contact {self.moderator_email} to report this incident."
 					message = f"Subject: {self.email_subject}\n\n{message_text}"
 					server.sendmail(self.email_from, arg, message)
 					server.quit()
@@ -179,8 +177,8 @@ class Verification(commands.Cog):
 				with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
 					if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
 						await ctx.send(
-							f"Error! That email has already been used! If you believe this is an error or are trying to "
-							f"re-verify, please contact a moderator in this channel or through direct message. Thanks!")
+							"Error! That email has already been used! If you believe this is an error or are trying to "
+							"re-verify, please contact a moderator in this channel or through direct message. Thanks!")
 						return
 			except FileNotFoundError:
 				print("Used emails file hasn't been created yet, continuing...")
@@ -218,4 +216,4 @@ class Verification(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(Verification(bot))
+	bot.add_cog(Verification(bot))
