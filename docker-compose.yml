@@ -1,0 +1,41 @@
+version: "3"
+services:
+  dockerbot:
+    image: kaosjr/verificationbot:latest
+    environment:
+      # The Discord bot token being used. Do not share this!
+      - token=
+      # The command prefix used by the bot.
+      - key=$
+      # The filename for the file that stores previously used emails.
+      - used_emails=used_emails.text
+      # The filename for a file (not needed) for alerting mods if used.
+      - warn_emails=exchange_emails.txt
+      # The moderator email to contact in the sent email.
+      - moderator_email=
+      # The sample username given by vhelp. Will also be blacklisted.
+      - sample=accountid
+      # The email domain checked against (i.e. Gmail would be gmail.com).
+      - domain=gmail.com
+      # The email account used by the bot to send emails.
+      - from=
+      # The password for the email account. Required to login.
+      - password=
+      # The subject of the emails being sent by the bot.
+      - subject=Verification
+      # The SMTP server emails are sent from. The Gmail one is provided.
+      - server=smtp.gmail.com
+      # The port of the SMTP server above. The Gmail one is provided.
+      - port=465
+      # The role given to members who successfully verify.
+      - server_role=
+      # The channel id for the verification channel.
+      - channel_id=
+      # The channel id for a channel for bot alerts (i.e. mod-only)
+      - notify_id=
+      # The user if for a user to ping if an email is already used
+      - admin_id=
+      # The name sent addressing the person in the email
+      - author_name=
+    volumes:
+      - ./data:/data

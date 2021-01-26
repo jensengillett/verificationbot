@@ -2,4 +2,3 @@
 discord.py
 varint
 sqlalchemy
-toml
