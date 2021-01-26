@@ -1,3 +1,4 @@
+import os
 import smtplib
 import ssl
 import random
@@ -5,40 +6,35 @@ import random
 import discord
 from discord.ext import commands
 
-from util.config import BotConfig
-
 
 class Verification(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
 		try:
-			print("Loading config...")
-			config = BotConfig(self.bot.config_path)
-			config_data = config.data
+			# bot_token = os.environ["token"]
+			self.bot_key = os.environ["key"]
+			self.used_emails = os.environ["used_emails"]
+			self.warn_emails = os.environ["warn_emails"]
+			self.moderator_email = os.environ["moderator_email"]
 
-			bot_data = config_data["bot"]
-			# self.bot_token = bot_data["token"]
-			self.bot_key = bot_data["key"]
-			self.used_emails = bot_data["used_emails"]
-			self.warn_emails = bot_data["warn_emails"]
-			self.moderator_email = bot_data["moderator_email"]
+			self.sample_username = os.environ["sample"]
+			self.verify_domain = os.environ["domain"]
+			self.email_from = os.environ["from"]
+			self.email_password = os.environ["password"]
+			self.email_subject = os.environ["subject"]
+			self.email_server = os.environ["server"]
+			self.email_port = os.environ["port"]
 
-			email_data = config_data["email"]
-			self.sample_username = email_data["sample"]
-			self.verify_domain = email_data["domain"]
-			self.email_from = email_data["from"]
-			self.email_password = email_data["password"]
-			self.email_subject = email_data["subject"]
-			self.email_server = email_data["server"]
-			self.email_port = email_data["port"]
+			self.role = os.environ["server_role"]
+			self.channel_id = os.environ["channel_id"]
+			self.notify_id = os.environ["notify_id"]
+			self.admin_id = os.environ["admin_id"]
+			self.author_name = os.environ["author_name"]
 
-			discord_data = config_data["discord"]
-			self.role = discord_data["server_role"]
-			self.channel_id = discord_data["channel_id"]
-			self.notify_id = discord_data["notify_id"]
-			self.admin_id = discord_data["admin_id"]
-			self.author_name = discord_data["author_name"]
+			self.channel_id = int(self.channel_id)
+			self.notify_id = int(self.notify_id)
+			self.admin_id = int(self.admin_id)
 
 		except KeyError as e:
 			print(f"Config error.\n\tKey Not Loaded: {e}")
@@ -163,7 +159,6 @@ class Verification(commands.Cog):
 			else:
 				await ctx.send(f"Invalid email {ctx.author.mention}!")
 
-
 	@commands.command(name="verify", aliases=["token", "Verify", "Token"])
 	@commands.guild_only()
 	async def _verify(self, ctx, arg):
@@ -205,10 +200,7 @@ class Verification(commands.Cog):
 			if self.token_list:
 				if self.token_list[ctx.author.id] == arg:
 					await ctx.send(f"{ctx.author.mention}, you've been verified!")
-
-					print(discord.utils.get(ctx.message.author.guild.roles, name=self.role))
-
-					await ctx.author.add_roles(discord.utils.get(ctx.message.author.guild.roles, name=self.role))
+					await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, name=self.role))
 					with open(self.used_emails, 'a') as file:  # Writes used emails to file for verification
 						file.write(f"{self.email_list[ctx.author.id]}\n")
 				else:

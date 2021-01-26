@@ -16,7 +16,7 @@ current_dir = osp.dirname(__file__)  # grab the current system directory on an o
 data_path = "/app/data"  # folder name
 
 # The extensions ("cogs") to load
-extensions = ["reactor", "utility", "verification"]
+extensions = ["errors", "reactor", "utility", "verification"]
 
 # Load new intents system. This is required for the new reactors functionality.
 intents = discord.Intents.default()
@@ -35,26 +35,6 @@ try:
 	bot_token = os.environ["token"]
 	bot_key = os.environ["key"]
 	used_emails = os.environ["used_emails"]
-	warn_emails = os.environ["warn_emails"]
-	moderator_email = os.environ["moderator_email"]
-
-	sample_username = os.environ["sample"]
-	verify_domain = os.environ["domain"]
-	email_from = os.environ["from"]
-	email_password = os.environ["password"]
-	email_subject = os.environ["subject"]
-	email_server = os.environ["server"]
-	email_port = os.environ["port"]
-
-	role = os.environ["server_role"]
-	channel_id = os.environ["channel_id"]
-	notify_id = os.environ["notify_id"]
-	admin_id = os.environ["admin_id"]
-	author_name = os.environ["author_name"]
-
-	channel_id = int(channel_id)
-	notify_id = int(notify_id)
-	admin_id = int (admin_id)
 
 	do_run = True
 except KeyError as e:
@@ -69,12 +49,9 @@ used_emails = osp.join(current_dir, data_path, used_emails)
 
 # Set up the bot based on the loaded bot prefix and load the intents system.
 bot = commands.Bot(command_prefix=bot_key, intents=intents)
-# Set's an attr for the bot config path so the verification cog can use it
-setattr(bot, "config_path", config_path)
 
 # By default, there's no help command other than vhelp. This is so that it doesn't interfere with other bots using the same prefix.
 bot.remove_command('help')
-
 
 # Update discord presence when everything is successfully loaded.
 @bot.event
@@ -91,21 +68,7 @@ async def on_message(message):
 	await bot.process_commands(message)
 
 
-# Exception handling.
-# @bot.event
-# async def on_command_error(ctx, exception):
-# 	if isinstance(exception, cmderr.PrivateMessageOnly):
-# 		await ctx.send("Please DM the bot to use this command!")
-# 	elif isinstance(exception, cmderr.NoPrivateMessage):
-# 		await ctx.channel.send("This command must be used in a Discord server!")
-# 	elif isinstance(exception, cmderr.MissingRole):
-# 		await ctx.channel.send("Missing required role to use this command!")
-# 	elif isinstance(exception, cmderr.MissingRequiredArgument):
-# 		await ctx.channel.send("Missing required arguments!")
-# 	else:
-# 		print(exception)	
-
-
+# Loads extensions before running bot
 if __name__ == "__main__":
 
     count = 0
