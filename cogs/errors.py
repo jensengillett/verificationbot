@@ -9,7 +9,7 @@ class Errors(commands.Cog):
 
 	# Exception handling.
 	@commands.Cog.listener("on_command_error")
-	async def on_command_error(ctx, exception):
+	async def on_command_error(self, ctx, exception):
 		if isinstance(exception, cmderr.PrivateMessageOnly):
 			await ctx.send("Please DM the bot to use this command!")
 		elif isinstance(exception, cmderr.NoPrivateMessage):
