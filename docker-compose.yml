@@ -8,7 +8,7 @@ services:
       # The command prefix used by the bot.
       - key=$
       # The filename for the file that stores previously used emails.
-      - used_emails=used_emails.text
+      - used_emails=used_emails.txt
       # The filename for a file (not needed) for alerting mods if used.
       - warn_emails=exchange_emails.txt
       # The moderator email to contact in the sent email.
@@ -38,4 +38,4 @@ services:
       # The name sent addressing the person in the email
       - author_name=
     volumes:
-      - ./data:/data
+      - ./data:/app/data
