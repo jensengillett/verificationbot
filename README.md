@@ -6,9 +6,9 @@ This project started as a small project for the UVic Engineering and Computer Sc
 
 As the bot has been an effective stopgap for keeping trolls and non-UVic students out of our Discord server, other servers started to take notice. Thanks to the Fall 2020 semester being fully online, many Discord servers popped up, some with thousands of members, and the lack of a verification system has become a concern.
 
-The bot code was therefore rewritten to be fully modularized; every aspect that is necessary to control is located within the *config.toml* file created by the bot.
+The bot code was therefore rewritten to be fully modularized; every aspect that is necessary to control is located within the the `docker-compose.yml` file.
 
-The main thing to keep in mind is that this bot relies on *email* as the form of verification, and therefore is only realistically applicable to secondary/post-secondary groups who have a mandated and standardized email system.
+The main thing to keep in mind is that this bot relies on *email* as the form of verification, and therefore is only realistically applicable to secondary/post-secondary groups or workspaces who have a mandated and standardized email system.
 
 # Setup
 To start, check that you have docker installed. If not, go to https://docs.docker.com/get-docker/ to download docker (and if on Linux or WSL, download docker-compose as well at here: https://docs.docker.com/compose/install/).
