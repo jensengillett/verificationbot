@@ -10,6 +10,7 @@ from discord.ext import commands
 print("Starting...")
 
 current_dir = osp.dirname(__file__)  # grab the current system directory on an os-independent level
+print(current_dir)
 data_path = "/data"  # folder name
 
 # The extensions ("cogs") to load
