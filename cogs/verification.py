@@ -175,7 +175,7 @@ class Verification(commands.Cog):
 			# this is copied from above to avoid an issue where two people could use the same email before it was verified.
 			try:
 				with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
-					if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
+					if any(str(self.email_list[ctx.author.id]) == str(line).strip('\n').lower() for line in file):
 						await ctx.send(
 							"Error! That email has already been used! If you believe this is an error or are trying to "
 							"re-verify, please contact a moderator in this channel or through direct message. Thanks!")
