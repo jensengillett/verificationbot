@@ -116,8 +116,10 @@ class Verification(commands.Cog):
 				print("Warning list file not found, ignoring rest.")
 
 			# This is a bit of a hacky way to do an email attempt checking system. If someone tries to repeatedly use the email command, they will be blacklisted from further attempts.
+			maxedOut = False
 			try:
 				if self.email_attempts[ctx.author.id] >= 5:
+					maxedOut = True
 					await ctx.send(
 						f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a "
 						f"moderator for assistance with verifying if this is in error. Thanks!")
@@ -127,7 +129,7 @@ class Verification(commands.Cog):
 			except:
 				print("")
 
-			if dm == self.verify_domain:  # Send the actual email.
+			if dm == self.verify_domain and not maxedOut:  # Send the actual email.
 				await ctx.send("Sending verification email...")
 				with smtplib.SMTP_SSL(self.email_server, self.email_port, context=ssl.create_default_context()) as server:
 					server.login(self.email_from, self.email_password)
