@@ -9,7 +9,7 @@ class Hashing:
 		if not self.salt:
 			return string
 
-		hashed = hashlib.sha256(self.salt.encode() + string.encode())
+		hashed = hashlib.md5(self.salt.encode() + string.encode())
 		return hashed.hexdigest()
 
 	def check_hash(self, string, md_hash):
