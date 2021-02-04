@@ -10,7 +10,7 @@ from discord.ext import commands
 print("Starting...")
 
 current_dir = osp.dirname(__file__)  # grab the current system directory on an os-independent level
-data_path = "/data"  # folder name
+data_path = "data"  # folder name
 
 # The extensions ("cogs") to load
 extensions = ["errors", "reactor", "utility", "verification"]
@@ -46,6 +46,10 @@ used_emails = osp.join(current_dir, data_path, used_emails)
 
 # Set up the bot based on the loaded bot prefix and load the intents system.
 bot = commands.Bot(command_prefix=bot_key, intents=intents)
+
+# Set attributes to bot, used in other modules
+setattr(bot, "current_dir", current_dir)
+setattr(bot, "data_path", data_path)
 
 # By default, there's no help command other than vhelp. This is so that it doesn't interfere with other bots using the same prefix.
 bot.remove_command('help')

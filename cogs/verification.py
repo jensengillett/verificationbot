@@ -1,4 +1,5 @@
 import os
+import os.path as osp
 import smtplib
 import ssl
 import random
@@ -35,6 +36,8 @@ class Verification(commands.Cog):
 			self.channel_id = int(self.channel_id)
 			self.notify_id = int(self.notify_id)
 			self.admin_id = int(self.admin_id)
+
+			self.used_emails = osp.join(self.bot.current_dir, self.bot.data_path, self.used_emails)
 
 		except KeyError as e:
 			print(f"Config error.\n\tKey Not Loaded: {e}")
