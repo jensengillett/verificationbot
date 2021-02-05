@@ -100,13 +100,6 @@ class Verification(commands.Cog):
 
 			try:
 				with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
-					# if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
-					# 	admin = await self.bot.fetch_user(self.admin_id)
-					# 	await ctx.send(
-					# 		f"Error! That email has already been used! If you believe this is an error or are trying to "
-					# 		f"re-verify, please contact {admin.mention} in this channel or through direct message. Thanks!")
-					# 	return
-
 					if any(self.bot.hashing.check_hash(str(arg.lower()), str(line).strip('\n')) for line in file):
 						admin = await self.bot.fetch_user(self.admin_id)
 						await ctx.send(
@@ -187,12 +180,6 @@ class Verification(commands.Cog):
 			# this is copied from above to avoid an issue where two people could use the same email before it was verified.
 			try:
 				with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
-					# if any(str(self.email_list[ctx.author.id]) == str(line).strip('\n').lower() for line in file):
-					# 	await ctx.send(
-					# 		"Error! That email has already been used! If you believe this is an error or are trying to "
-					# 		"re-verify, please contact a moderator in this channel or through direct message. Thanks!")
-					# 	return
-
 					if any(self.bot.hashing.check_hash(str(self.email_list[ctx.author.id]), str(line).strip('\n')) for line in file):
 						await ctx.send(
 							"Error! That email has already been used! If you believe this is an error or are trying to "
@@ -218,8 +205,6 @@ class Verification(commands.Cog):
 					await ctx.send(f"{ctx.author.mention}, you've been verified!")
 					await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, name=self.role))
 					with open(self.used_emails, 'a') as file:  # Writes used emails to file for verification
-						# file.write(f"{self.email_list[ctx.author.id]}\n")
-
 						hashed = self.bot.hashing.hash(self.email_list[ctx.author.id])
 						file.write(f"{hashed}\n")
 				else:
