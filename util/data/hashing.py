@@ -3,7 +3,7 @@ import hashlib
 
 class Hashing:
 	def __init__(self, salt: str):
-		"""Test
+		"""Setup hashing class with a salt.
 
 		Args:
 			salt (str): A string of text that is added to a hash to prevent a hash from being recreated. This should be kept private!
