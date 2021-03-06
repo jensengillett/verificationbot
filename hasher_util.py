@@ -4,7 +4,6 @@ data to a set of hashed used_emails. This file can be
 removed once data hashing transfer is completed.
 """
 
-import sys
 import hashlib
 
 hash_key = "hashkey"  # Set this to your key you wish to hash the data with

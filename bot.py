@@ -1,7 +1,7 @@
 import os.path as osp
 import os
-import smtplib
-import ssl
+# import smtplib
+# import ssl
 import random
 
 import discord
@@ -26,6 +26,12 @@ intents.reactions = True
 
 # Start the bot functions.
 do_run = True
+
+# Set up variables
+bot_token = None
+used_emails = None
+bot_key = None
+hash_key = None
 
 # Start config loading from disk.
 try:

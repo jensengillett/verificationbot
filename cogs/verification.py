@@ -80,16 +80,19 @@ class Verification(commands.Cog):
 			print(f'Emailing user {ctx.author.name}, email {arg}')  # This gets sent to the console only.
 			await ctx.message.delete()  # delete their email from the channel, to prevent it leaking.
 
-			dm = "teststring"  # just in case, though this should never actually get used.
-
 			try:
 				dm = arg.split('@')[1]  # split the string based on the @ symbol
 			except:
 				await ctx.send("Error! That is not a valid email!")  # no @ symbol = no email
+				return
+
+			if len(arg.split('@')[0]) > 64 or len(arg.split('@')[1]) > 255:  # valid emails have 64char max before @, 255 max after
+				await ctx.send('Error! Specified email address is too long.')
+				return
 
 			if set('+').intersection(arg):  # to prevent people from making extra email addresses
-				dm = "nou"
 				await ctx.send("Error! Please do not use the + character in your email address!")
+				return
 
 			blacklist_names = [self.sample_username]  # If any email begins with one of these, it's invalid
 
@@ -116,7 +119,7 @@ class Verification(commands.Cog):
 						await sendIn.send(
 							f"Alert! Email on warning list used. Discord ID: {ctx.author.mention}, email `{arg}`.")
 			except FileNotFoundError:
-				print("Warning list file not found, ignoring rest.")
+				print("Warning list file not found, ignoring.")
 
 			# This is a bit of a hacky way to do an email attempt checking system. If someone tries to repeatedly use the email command, they will be blacklisted from further attempts.
 			maxedOut = False

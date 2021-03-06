@@ -1,6 +1,4 @@
-import discord
 from discord.ext import commands
-
 from sqlalchemy.exc import OperationalError
 
 from util.data.guild_data import GuildData
