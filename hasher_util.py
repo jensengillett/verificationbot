@@ -9,6 +9,7 @@ import hashlib
 hash_key = "hashkey"  # Set this to your key you wish to hash the data with
 file_to_hash = "hashme.txt"  # File to hash
 file_dest = "hashed.txt"  # Complete, hashed file destination
+""" NOTE: FILE NAMES MUST BE DIFFERENT! """
 
 
 class Hashing:
