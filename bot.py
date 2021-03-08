@@ -1,11 +1,13 @@
 import os.path as osp
 import os
-import smtplib
-import ssl
+# import smtplib
+# import ssl
 import random
 
 import discord
 from discord.ext import commands
+
+from util.data.hashing import Hashing
 
 print("Starting...")
 
@@ -25,6 +27,12 @@ intents.reactions = True
 # Start the bot functions.
 do_run = True
 
+# Set up variables
+bot_token = None
+used_emails = None
+bot_key = None
+hash_key = None
+
 # Start config loading from disk.
 try:
 	print("Loading config...")
@@ -32,6 +40,7 @@ try:
 	bot_token = os.environ["token"]
 	bot_key = os.environ["key"]
 	used_emails = os.environ["used_emails"]
+	hash_key = os.environ["hash_key"]
 
 	do_run = True
 except KeyError as e:
@@ -47,9 +56,13 @@ used_emails = osp.join(current_dir, data_path, used_emails)
 # Set up the bot based on the loaded bot prefix and load the intents system.
 bot = commands.Bot(command_prefix=bot_key, intents=intents)
 
+# Set up hashing, salt (key) based on defined hash key
+hashing = Hashing(hash_key)
+
 # Set attributes to bot, used in other modules
 setattr(bot, "current_dir", current_dir)
 setattr(bot, "data_path", data_path)
+setattr(bot, "hashing", hashing)
 
 # By default, there's no help command other than vhelp. This is so that it doesn't interfere with other bots using the same prefix.
 bot.remove_command('help')

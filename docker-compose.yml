@@ -11,6 +11,8 @@ services:
       - used_emails=used_emails.txt
       # The filename for a file (not needed) for alerting mods if used.
       - warn_emails=exchange_emails.txt
+      # The hash key used for hashing data (i.e. emails) into MD5, leave blank for no hashing
+      - hash_key=
       # The moderator email to contact in the sent email.
       - moderator_email=
       # The sample username given by vhelp. Will also be blacklisted.

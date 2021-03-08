@@ -38,6 +38,7 @@ class Verification(commands.Cog):
 			self.admin_id = int(self.admin_id)
 
 			self.used_emails = osp.join(self.bot.current_dir, self.bot.data_path, self.used_emails)
+			self.warn_emails = osp.join(self.bot.current_dir, self.bot.data_path, self.warn_emails)
 
 		except KeyError as e:
 			print(f"Config error.\n\tKey Not Loaded: {e}")
@@ -80,16 +81,19 @@ class Verification(commands.Cog):
 			print(f'Emailing user {ctx.author.name}, email {arg}')  # This gets sent to the console only.
 			await ctx.message.delete()  # delete their email from the channel, to prevent it leaking.
 
-			dm = "teststring"  # just in case, though this should never actually get used.
-
 			try:
 				dm = arg.split('@')[1]  # split the string based on the @ symbol
 			except:
 				await ctx.send("Error! That is not a valid email!")  # no @ symbol = no email
+				return
+
+			if len(arg.split('@')[0]) > 64 or len(arg.split('@')[1]) > 255:  # valid emails have 64char max before @, 255 max after
+				await ctx.send('Error! Specified email address is too long.')
+				return
 
 			if set('+').intersection(arg):  # to prevent people from making extra email addresses
-				dm = "nou"
 				await ctx.send("Error! Please do not use the + character in your email address!")
+				return
 
 			blacklist_names = [self.sample_username]  # If any email begins with one of these, it's invalid
 
@@ -100,7 +104,7 @@ class Verification(commands.Cog):
 
 			try:
 				with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
-					if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
+					if any(self.bot.hashing.check_hash(str(arg.lower()), str(line).strip('\n')) for line in file):
 						admin = await self.bot.fetch_user(self.admin_id)
 						await ctx.send(
 							f"Error! That email has already been used! If you believe this is an error or are trying to "
@@ -116,7 +120,7 @@ class Verification(commands.Cog):
 						await sendIn.send(
 							f"Alert! Email on warning list used. Discord ID: {ctx.author.mention}, email `{arg}`.")
 			except FileNotFoundError:
-				print("Warning list file not found, ignoring rest.")
+				print("Warning list file not found, ignoring.")
 
 			# This is a bit of a hacky way to do an email attempt checking system. If someone tries to repeatedly use the email command, they will be blacklisted from further attempts.
 			maxedOut = False
@@ -180,7 +184,7 @@ class Verification(commands.Cog):
 			# this is copied from above to avoid an issue where two people could use the same email before it was verified.
 			try:
 				with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
-					if any(str(self.email_list[ctx.author.id]) == str(line).strip('\n').lower() for line in file):
+					if any(self.bot.hashing.check_hash(str(self.email_list[ctx.author.id]), str(line).strip('\n')) for line in file):
 						await ctx.send(
 							"Error! That email has already been used! If you believe this is an error or are trying to "
 							"re-verify, please contact a moderator in this channel or through direct message. Thanks!")
@@ -205,7 +209,8 @@ class Verification(commands.Cog):
 					await ctx.send(f"{ctx.author.mention}, you've been verified!")
 					await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, name=self.role))
 					with open(self.used_emails, 'a') as file:  # Writes used emails to file for verification
-						file.write(f"{self.email_list[ctx.author.id]}\n")
+						hashed = self.bot.hashing.hash(self.email_list[ctx.author.id])
+						file.write(f"{hashed}\n")
 				else:
 					await ctx.send(f"Invalid token {ctx.author.mention}!")
 					if self.verify_attempts:

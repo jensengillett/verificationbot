@@ -12,6 +12,7 @@ ENV token=
 ENV key=
 ENV used_emails=
 ENV warn_emails=
+ENV hash_key=
 ENV moderator_email=
 
 # email
