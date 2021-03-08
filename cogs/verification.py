@@ -38,6 +38,7 @@ class Verification(commands.Cog):
 			self.admin_id = int(self.admin_id)
 
 			self.used_emails = osp.join(self.bot.current_dir, self.bot.data_path, self.used_emails)
+			self.warn_emails = osp.join(self.bot.current_dir, self.bot.data_path, self.warn_emails)
 
 		except KeyError as e:
 			print(f"Config error.\n\tKey Not Loaded: {e}")
