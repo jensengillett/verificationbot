@@ -32,6 +32,7 @@ class Verification(commands.Cog):
 			self.notify_id = os.environ["notify_id"]
 			self.admin_id = os.environ["admin_id"]
 			self.author_name = os.environ["author_name"]
+			self.webmail_link = os.environ["webmail_link"]
 
 			self.channel_id = int(self.channel_id)
 			self.notify_id = int(self.notify_id)
@@ -63,7 +64,9 @@ class Verification(commands.Cog):
 			f"your own email, keeping in mind that the bot only accepts email addresses with `@{self.verify_domain}` at the end. "
 			f"**Wait for an email to be received**. If you don't receive an email after 5 minutes, try using the email "
 			f"command again. **Send the command provided in the email** as a message in the {verify_email.mention} channel "
-			f"to gain access to the rest of the server.\n\n**Send messages in the {verify_email.mention} channel to use this "
+			f"to gain access to the rest of the server."
+			f"\n\n**You can access your webmail at {self.webmail_link}**"
+			f"\n\n**Send messages in the {verify_email.mention} channel to use this "
 			f"bot's commands, not in a DM.**")
 
 	# The email command handles all the checks done before an email is sent out alongside the actual email sending.

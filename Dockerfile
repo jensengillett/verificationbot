@@ -23,6 +23,7 @@ ENV password=
 ENV subject=
 ENV server=
 ENV port=
+ENV webmail_link=
 
 # discord
 ENV server_role=
