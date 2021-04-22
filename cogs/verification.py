@@ -26,6 +26,7 @@ class Verification(commands.Cog):
 			self.email_subject = os.environ["subject"]
 			self.email_server = os.environ["server"]
 			self.email_port = os.environ["port"]
+			self.webmail_link = os.environ["webmail_link"]
 
 			self.role = os.environ["server_role"]
 			self.channel_id = os.environ["channel_id"]
