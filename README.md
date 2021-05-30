@@ -1,6 +1,13 @@
 # jensengillett/verificationbot
 Discord verification bot designed for postsecondary institutions. Fully modular and configurable.
 
+# Support me!
+If you use this bot on your server, feel free to credit me by linking to this repository. 
+
+If you want to support me financially, buy me a cup of coffee! https://ko-fi.com/jensengillett
+
+You can also support me through Paypal directly. https://paypal.me/jensengillett
+
 # Background
 This project started as a small project for the UVic Engineering and Computer Science Discord server. With a growing server population, we wanted to make an automated system to stop non-UVic students from accessing the remainder of the Discord server. It was with this goal in mind that this bot was initially created.
 
