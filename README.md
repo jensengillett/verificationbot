@@ -28,6 +28,10 @@ docker-compose up -d
 ```
 Congratulations! Assuming your variables in the docker-compose file are correct, you should have a running discord bot!
 
+Now, if you are still confused by how to setup a discord bot, you need to follow this:
+
+A bot token needs to be created to run this bot. The Discord Developers Portal is linked here: https://discord.com/developers/applications. Google is your friend. The permissions required for this bot are *Manage Server*, *Manage Roles*, *View Channels*, *Send Messages*, *Manage Messages*, *Read Message History*, and *Add Reactions*. 
+
 # Commands
 Here is a full list of the commands the bot offers:
 - vhelp: Displays an information message about how to use the email and verify commands.
