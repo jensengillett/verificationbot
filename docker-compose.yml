@@ -29,9 +29,9 @@ services:
       - server=smtp.gmail.com
       # The port of the SMTP server above. The Gmail one is provided.
       - port=465
-      # The role given to members who successfully verify.
-      - webmail_link=
       # The link to access the email inboxes (ex: exchange, gsuite, etc.).
+      - webmail_link=
+      # The role given to members who successfully verify.
       - server_role=
       # The channel id for the verification channel.
       - channel_id=
