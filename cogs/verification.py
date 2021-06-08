@@ -73,14 +73,15 @@ class Verification(commands.Cog):
 	# It's very complicated.
 	@commands.command(name="email", aliases=["mail", "send", "Email", "Mail", "Send"])
 	async def _email(self, ctx, arg):
+		"""
+		Sends an email containing a token to verify the user
+		Parameters
+		------------
+		email: str [Required]
+			The email that the token will be send to.
+		"""
+
 		if ctx.channel.id == self.channel_id:
-			"""
-			Sends an email containing a token to verify the user
-			Parameters
-			------------
-			email: str [Required]
-				The email that the token will be send to.
-			"""
 			print(f'Emailing user {ctx.author.name}, email {arg}')  # This gets sent to the console only.
 			await ctx.message.delete()  # delete their email from the channel, to prevent it leaking.
 
