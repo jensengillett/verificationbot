@@ -1,6 +1,13 @@
 # jensengillett/verificationbot
 Discord verification bot designed for postsecondary institutions. Fully modular and configurable.
 
+# Support me!
+If you use this bot on your server, feel free to credit me by linking to this repository. 
+
+If you want to support me financially, buy me a cup of coffee! https://ko-fi.com/jensengillett
+
+You can also support me through Paypal directly. https://paypal.me/jensengillett
+
 # Background
 This project started as a small project for the UVic Engineering and Computer Science Discord server. With a growing server population, we wanted to make an automated system to stop non-UVic students from accessing the remainder of the Discord server. It was with this goal in mind that this bot was initially created.
 
@@ -20,6 +27,10 @@ Open a terminal/command prompt and change directory to the folder with the downl
 docker-compose up -d
 ```
 Congratulations! Assuming your variables in the docker-compose file are correct, you should have a running discord bot!
+
+Now, if you are still confused by how to setup a discord bot, you need to follow this:
+
+A bot token needs to be created to run this bot. The Discord Developers Portal is linked here: https://discord.com/developers/applications. Google is your friend. The permissions required for this bot are *Manage Server*, *Manage Roles*, *View Channels*, *Send Messages*, *Manage Messages*, *Read Message History*, and *Add Reactions*. 
 
 # Commands
 Here is a full list of the commands the bot offers:
