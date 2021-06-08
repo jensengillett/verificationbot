@@ -42,6 +42,9 @@ Here is a full list of the commands the bot offers:
 - reactordelete [messageid]: (Manage Server only) Removes all reactors from a message.
 - reactorget: (Manage Server only) Gets all reactors in the server.
 - reactorclearall: (Manage Server only) Removes all reactors in the server.
+- source: Replies with a link to this repo.
+- kofi: Replies with a link to a Ko-Fi support page.
+- paypal: Replies with a link to a PayPal support page.
 
 # Contributors
 Notable contributors are listed below:
