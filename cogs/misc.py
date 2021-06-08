@@ -1,7 +1,7 @@
 from discord.ext import commands
 
 
-class Support(commands.Cog):
+class Misc(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
@@ -22,4 +22,4 @@ class Support(commands.Cog):
 
 
 def setup(bot):
-	bot.add_cog(Support(bot))
+	bot.add_cog(Misc(bot))
