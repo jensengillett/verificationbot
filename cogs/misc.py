@@ -7,6 +7,7 @@ class Misc(commands.Cog):
 
 		self.kofi_link = "https://ko-fi.com/jensengillett"
 		self.paypal_link = "https://paypal.me/jensengillett"
+		self.github_link = "https://github.com/jensengillett/verificationbot"
 
 	@commands.command(aliases=["coffee", "buymeacoffee"])
 	async def kofi(self, ctx):
@@ -19,6 +20,12 @@ class Misc(commands.Cog):
 		"""Support development on PayPal!"""
 
 		await ctx.reply(self.paypal_link)
+
+	@commands.command(aliases=["repo"])
+	async def source(self, ctx):
+		"""View the source code for the bot on Github!"""
+
+		await ctx.reply(self.github_link)
 
 
 def setup(bot):
