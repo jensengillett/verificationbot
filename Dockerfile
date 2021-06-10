@@ -4,7 +4,6 @@ WORKDIR /app
 RUN pip install discord.py
 RUN pip install varint
 RUN pip install sqlalchemy
-RUN pip install toml
 
 # A bunch of environment variables, will be used in Docker Compose
 # bot
