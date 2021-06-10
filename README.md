@@ -1,13 +1,6 @@
 # jensengillett/verificationbot
 Discord verification bot designed for postsecondary institutions. Fully modular and configurable.
 
-# Support me!
-If you use this bot on your server, feel free to credit me by linking to this repository. 
-
-If you want to support me financially, buy me a cup of coffee! https://ko-fi.com/jensengillett
-
-You can also support me through Paypal directly. https://paypal.me/jensengillett
-
 # Background
 This project started as a small project for the UVic Engineering and Computer Science Discord server. With a growing server population, we wanted to make an automated system to stop non-UVic students from accessing the remainder of the Discord server. It was with this goal in mind that this bot was initially created.
 
@@ -22,15 +15,13 @@ To start, check that you have docker installed. If not, go to https://docs.docke
 
 Download the docker-compose.yml from above and move it to your folder of choice. Open it with notepad or another text editor and add your bot token, email, etc.
 
+A bot token needs to be created to run this bot. The Discord Developers Portal is linked here: https://discord.com/developers/applications. Google is your friend. The permissions required for this bot are *Manage Server*, *Manage Roles*, *View Channels*, *Send Messages*, *Manage Messages*, *Read Message History*, and *Add Reactions*. 
+
 Open a terminal/command prompt and change directory to the folder with the downloaded file and run:
 ```bash
 docker-compose up -d
 ```
 Congratulations! Assuming your variables in the docker-compose file are correct, you should have a running discord bot!
-
-Now, if you are still confused by how to setup a discord bot, you need to follow this:
-
-A bot token needs to be created to run this bot. The Discord Developers Portal is linked here: https://discord.com/developers/applications. Google is your friend. The permissions required for this bot are *Manage Server*, *Manage Roles*, *View Channels*, *Send Messages*, *Manage Messages*, *Read Message History*, and *Add Reactions*. 
 
 # Commands
 Here is a full list of the commands the bot offers:
@@ -51,9 +42,16 @@ Notable contributors are listed below:
 
 [aabuelazm](https://github.com/aabuelazm): wrote the Dockerfile for the bot and updated bot.py to use environment variables so it can be easily deployed to any Docker-running server as a container. Basically made it work in Docker.
 
-[MiningMark48](https://github.com/MiningMark48): wrote the initial draft of the bot code, the *reactor.py* and *util/data/* handlers to work with sqlalchemy, changed the config system to use TOML (now replaced), and converted code to use Discord.py Cogs.
+[MiningMark48](https://github.com/MiningMark48): wrote the initial draft of the bot code, the *reactor.py* and *util/data/* handlers to work with sqlalchemy, converted code to use discord.py Cogs, and implemented many of the miscelanous commands.
 
 [MNThomson](https://github.com/MNThomson): hit Shift Tab and fixed the Brute Force Vulnerability.
+
+# Support me!
+If you use this bot on your server, feel free to credit me by linking to this repository. 
+
+If you want to support me financially, buy me a cup of coffee! https://ko-fi.com/jensengillett
+
+You can also support me through Paypal directly. https://paypal.me/jensengillett
 
 # License
 The code for this repo is licensed under the GPL3. More information can be found in the *LICENSE* file in this repo.
