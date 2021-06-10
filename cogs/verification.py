@@ -170,6 +170,14 @@ class Verification(commands.Cog):
 			else:
 				await ctx.send(f"Invalid email {ctx.author.mention}!")
 
+	@commands.command()
+	@commands.guild_only()
+	async def test(self, ctx):
+		role = discord.utils.get(ctx.guild.roles, name=self.role)
+		if not role:
+			role = discord.utils.find(lambda r: str(r.id) == str(self.role), ctx.guild.roles)
+		await ctx.author.add_roles(role)
+
 	@commands.command(name="verify", aliases=["token", "Verify", "Token"])
 	@commands.guild_only()
 	async def _verify(self, ctx, arg):
@@ -211,7 +219,12 @@ class Verification(commands.Cog):
 			if self.token_list:
 				if self.token_list[ctx.author.id] == arg:
 					await ctx.send(f"{ctx.author.mention}, you've been verified!")
-					await ctx.author.add_roles(discord.utils.get(ctx.guild.roles, name=self.role))
+
+					role = discord.utils.get(ctx.guild.roles, name=self.role)
+					if not role:
+						role = discord.utils.find(lambda r: str(r.id) == str(self.role), ctx.guild.roles)
+					await ctx.author.add_roles(role)
+
 					with open(self.used_emails, 'a') as file:  # Writes used emails to file for verification
 						hashed = self.bot.hashing.hash(self.email_list[ctx.author.id])
 						file.write(f"{hashed}\n")
