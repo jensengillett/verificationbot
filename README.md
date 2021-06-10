@@ -42,7 +42,7 @@ Notable contributors are listed below:
 
 [aabuelazm](https://github.com/aabuelazm): wrote the Dockerfile for the bot and updated bot.py to use environment variables so it can be easily deployed to any Docker-running server as a container. Basically made it work in Docker.
 
-[MiningMark48](https://github.com/MiningMark48): wrote the initial draft of the bot code, the *reactor.py* and *util/data/* handlers to work with sqlalchemy, converted code to use discord.py Cogs, and implemented many of the miscelanous commands.
+[MiningMark48](https://github.com/MiningMark48): wrote the initial draft of the bot code, the *reactor.py* and *util/data/* handlers to work with sqlalchemy, converted code to use discord.py Cogs, and implemented many of the miscellaneous commands.
 
 [MNThomson](https://github.com/MNThomson): hit Shift Tab and fixed the Brute Force Vulnerability.
 
