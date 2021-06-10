@@ -53,7 +53,7 @@ Notable contributors are listed below:
 
 [MiningMark48](https://github.com/MiningMark48): wrote the initial draft of the bot code, the *reactor.py* and *util/data/* handlers to work with sqlalchemy, changed the config system to use TOML (now replaced), and converted code to use Discord.py Cogs.
 
-[MNThimson](https://github.com/MNThomson): hit Shift Tab and fixed the Brute Force Vulnerability.
+[MNThomson](https://github.com/MNThomson): hit Shift Tab and fixed the Brute Force Vulnerability.
 
 # License
 The code for this repo is licensed under the GPL3. More information can be found in the *LICENSE* file in this repo.
