@@ -24,7 +24,7 @@ class Background(commands.Cog):
 			for a in cmd_aliases:
 				a = str(a).lower()
 				if content.startswith(a):
-					content = content.replace("email ", "", 1)
+					content = content.replace(f"{a} ", "", 1)
 					break
 
 			if is_valid_email(content):
