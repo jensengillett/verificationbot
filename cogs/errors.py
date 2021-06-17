@@ -40,19 +40,15 @@ def is_valid_email(email: str):
 	try:
 		dm = email.split('@')[1]  # split the string based on the @ symbol
 	except AttributeError as e:
-		print("DM EX\n", e)
 		return False
 
 	if not dm:
-		print("NOT DM")
 		return False
 
 	if len(email.split('@')[0]) > 64 or len(email.split('@')[1]) > 255:  # valid emails have 64char max before @, 255 max after
-		print("LEN")
 		return False
 
 	if set('+').intersection(email):  # to prevent people from making extra email addresses
-		print("+")
 		return False
 
 	return True
