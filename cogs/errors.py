@@ -27,13 +27,10 @@ class Errors(commands.Cog):
 			# If the attempted command is a valid email, run the email command
 			email = ctx.message.content.replace(ctx.prefix, "")
 			if is_valid_email(email):
-				msg = copy.copy(ctx.message)
-				channel = ctx.channel
-				msg.channel = channel
-				msg.author = ctx.author
-				msg.content = f"{ctx.prefix}email {email}"
-				new_ctx = await self.bot.get_context(msg, cls=type(ctx))
-				await self.bot.invoke(new_ctx)
+				ctx = await self.bot.get_context(email)
+				cmd = self.bot.get_command("email")
+				await ctx.invoke(cmd, email)
+
 		else:
 			print(exception)
 
