@@ -26,10 +26,18 @@ class Errors(commands.Cog):
 
 			# If the attempted command is a valid email, run the email command
 			email = ctx.message.content.replace(ctx.prefix, "")
+			email_cmd = self.bot.get_command("email")
+			cmd_aliases = email_cmd.aliases
+
+			for a in cmd_aliases:
+				a = str(a).lower()
+				if email.startswith(a):
+					email = email.replace(f"{a} ", "", 1)
+					break
+
 			if is_valid_email(email):
 				ctx = await self.bot.get_context(email)
-				cmd = self.bot.get_command("email")
-				await ctx.invoke(cmd, email)
+				await ctx.invoke(email_cmd, email)
 
 		else:
 			print(exception)
