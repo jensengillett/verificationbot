@@ -7,6 +7,8 @@ import random
 import discord
 from discord.ext import commands
 
+from util.email import is_valid_email
+
 
 class Verification(commands.Cog):
 	def __init__(self, bot):
@@ -86,17 +88,12 @@ class Verification(commands.Cog):
 
 			try:
 				dm = arg.split('@')[1]  # split the string based on the @ symbol
-			except:
+			except AttributeError:
 				await ctx.send("Error! That is not a valid email!")  # no @ symbol = no email
 				return
 
-			if len(arg.split('@')[0]) > 64 or len(arg.split('@')[1]) > 255:  # valid emails have 64char max before @, 255 max after
-				await ctx.send('Error! Specified email address is too long.')
-				return
-
-			if set('+').intersection(arg):  # to prevent people from making extra email addresses
-				await ctx.send("Error! Please do not use the + character in your email address!")
-				return
+			if not is_valid_email(arg):
+				return await ctx.send("Error! That is not a valid email!")
 
 			blacklist_names = [self.sample_username]  # If any email begins with one of these, it's invalid
 
