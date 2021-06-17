@@ -15,7 +15,7 @@ current_dir = osp.dirname(__file__)  # grab the current system directory on an o
 data_path = "data"  # folder name
 
 # The extensions ("cogs") to load
-extensions = ["errors", "misc", "reactor", "utility", "verification"]
+extensions = ["background", "errors", "misc", "reactor", "utility", "verification"]
 
 # Load new intents system. This is required for the new reactors functionality.
 intents = discord.Intents.default()
@@ -53,8 +53,20 @@ random.seed(bot_token)
 # From the used_emails filename, load the data from the data folder. This can be commented out if not using a data folder.
 used_emails = osp.join(current_dir, data_path, used_emails)
 
+
+def prefix(bot, message):
+	pfx = bot_key
+
+	# If prefix has a space after it, try using it instead
+	# 	Ex: `! email` is the same as `!email`
+	if str(message.content).startswith(f"{pfx} "):
+		pfx = f"{pfx} "
+
+	return pfx
+
+
 # Set up the bot based on the loaded bot prefix and load the intents system.
-bot = commands.Bot(command_prefix=bot_key, intents=intents)
+bot = commands.Bot(command_prefix=prefix, intents=intents)
 
 # Set up hashing, salt (key) based on defined hash key
 hashing = Hashing(hash_key)

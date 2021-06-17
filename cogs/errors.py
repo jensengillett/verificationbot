@@ -1,6 +1,10 @@
+import copy
+
 import discord
 from discord.ext import commands
 from discord.ext.commands import errors as cmderr
+
+from util.email import is_valid_email
 
 
 class Errors(commands.Cog):
@@ -18,6 +22,23 @@ class Errors(commands.Cog):
 			await ctx.channel.send("Missing required role to use this command!")
 		elif isinstance(exception, cmderr.MissingRequiredArgument):
 			await ctx.channel.send("Missing required arguments!")
+		elif isinstance(exception, cmderr.CommandNotFound):
+
+			# If the attempted command is a valid email, run the email command
+			email = ctx.message.content.replace(ctx.prefix, "")
+			email_cmd = self.bot.get_command("email")
+			cmd_aliases = email_cmd.aliases
+
+			for a in cmd_aliases:
+				a = str(a).lower()
+				if email.startswith(a):
+					email = email.replace(f"{a} ", "", 1)
+					break
+
+			if is_valid_email(email):
+				ctx = await self.bot.get_context(email)
+				await ctx.invoke(email_cmd, email)
+
 		else:
 			print(exception)
 
