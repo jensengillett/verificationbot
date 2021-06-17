@@ -79,6 +79,7 @@ setattr(bot, "hashing", hashing)
 # By default, there's no help command other than vhelp. This is so that it doesn't interfere with other bots using the same prefix.
 bot.remove_command('help')
 
+
 # Update discord presence when everything is successfully loaded.
 @bot.event
 async def on_ready():

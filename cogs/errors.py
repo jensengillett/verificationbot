@@ -37,8 +37,6 @@ class Errors(commands.Cog):
 
 
 def is_valid_email(email: str):
-	print("Email ", email)
-
 	try:
 		dm = email.split('@')[1]  # split the string based on the @ symbol
 	except AttributeError as e:
