@@ -15,12 +15,21 @@ class Background(commands.Cog):
 	@commands.Cog.listener("on_message")
 	async def on_message(self, message):
 		channel = message.channel
-		content = message.content
+		content = str(message.content).lower()
+
 		if str(channel.id) == str(self.channel_id):
+			email_cmd = self.bot.get_command("email")
+			cmd_aliases = email_cmd.aliases
+
+			for a in cmd_aliases:
+				a = str(a).lower()
+				if content.startswith(a):
+					content = content.replace("email ", "", 1)
+					break
+
 			if is_valid_email(content):
 				ctx = await self.bot.get_context(message)
-				cmd = self.bot.get_command("email")
-				await ctx.invoke(cmd, content)
+				return await ctx.invoke(email_cmd, content)
 
 
 def setup(bot):
