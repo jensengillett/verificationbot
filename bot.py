@@ -53,8 +53,20 @@ random.seed(bot_token)
 # From the used_emails filename, load the data from the data folder. This can be commented out if not using a data folder.
 used_emails = osp.join(current_dir, data_path, used_emails)
 
+
+def prefix(bot, message):
+	pfx = bot_key
+
+	# If prefix has a space after it, try using it instead
+	# 	Ex: `! email` is the same as `!email`
+	if str(message.content).startswith(f"{pfx} "):
+		pfx = f"{pfx} "
+
+	return pfx
+
+
 # Set up the bot based on the loaded bot prefix and load the intents system.
-bot = commands.Bot(command_prefix=bot_key, intents=intents)
+bot = commands.Bot(command_prefix=prefix, intents=intents)
 
 # Set up hashing, salt (key) based on defined hash key
 hashing = Hashing(hash_key)
@@ -66,7 +78,6 @@ setattr(bot, "hashing", hashing)
 
 # By default, there's no help command other than vhelp. This is so that it doesn't interfere with other bots using the same prefix.
 bot.remove_command('help')
-
 
 # Update discord presence when everything is successfully loaded.
 @bot.event
