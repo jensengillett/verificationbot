@@ -167,14 +167,6 @@ class Verification(commands.Cog):
 			else:
 				await ctx.send(f"Invalid email {ctx.author.mention}!")
 
-	@commands.command()
-	@commands.guild_only()
-	async def test(self, ctx):
-		role = discord.utils.get(ctx.guild.roles, name=self.role)
-		if not role:
-			role = discord.utils.find(lambda r: str(r.id) == str(self.role), ctx.guild.roles)
-		await ctx.author.add_roles(role)
-
 	@commands.command(name="verify", aliases=["token", "Verify", "Token"])
 	@commands.guild_only()
 	async def _verify(self, ctx, arg):
