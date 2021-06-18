@@ -13,7 +13,7 @@ class Misc(commands.Cog):
 	async def support(self, ctx):
 		"""Support development!"""
 
-		embed = discord.Embed(title="Support", color=0x00ff00)
+		embed = discord.Embed(title="Support", color=0x1b7819)
 		embed.description = f"[Repository]({self.github_link})"
 		embed.timestamp = ctx.message.created_at
 
