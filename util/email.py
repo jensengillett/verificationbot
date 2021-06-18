@@ -9,15 +9,18 @@ def is_valid_email(email: str):
 	# ---
 	# Explanation:
 	# 	\b (beginning boundary)
-	# 	Local part: Matched if it contains a word-character or a %, +, or - and is between 1 and 64 chars.
+	# 	Local part: Matched if it contains a word-character or a %, or - and is between 1 and 64 chars.
 	# 	@ (at-symbol in email)
 	# 	Domain name: Matched if it contains a word-character or - and is between 1 and 255 chars.
 	# 	. (period in domain)
 	# 	Domain ending: Matched if alpha-character and is at least 2 characters long.
 	# 	\b (ending boundary)
-	regex = r"\b[\w.%+-]{1,64}@[\w.-]{1,255}\.[a-zA-Z-]{2,}\b"
+	regex = r"\b[\w.%-]{1,64}@[\w.-]{1,255}\.[a-zA-Z-]{2,}\b"
 
-	if(re.search(regex, email)):
-		return True
+	if(not re.search(regex, email)):
+		return False
+	
+	if set('+').intersection(email):  # to prevent people from making extra email addresses
+		return False
 
-	return False
+	return True 
