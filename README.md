@@ -34,8 +34,17 @@ Here is a full list of the commands the bot offers:
 - reactorget: (Manage Server only) Gets all reactors in the server.
 - reactorclearall: (Manage Server only) Removes all reactors in the server.
 - source: Replies with a link to this repo.
-- kofi: Replies with a link to a Ko-Fi support page.
-- paypal: Replies with a link to a PayPal support page.
+- support: Replied with links to financially support the authors and contributors of this bot.
+
+# Email Command Notes
+There are a variety of extra handlers to help aid people that can't quite follow the instructions properly. The email command will accept the following variations:
+- (!) email [email@email.com]  - extra space before 'email'
+- (!)[email@email.com]  - no 'email'
+- (!)email[email@email.com]  - missing space between 'email' and their email
+- [email@email.com]  - missing alias and 'email'
+- email [email@email.com]  - missing alias
+
+These are primarily there to assist people new to Discord or who can't follow instructions. The vhelp command encourages use of the proper form, <alias>email [email@email.com].
 
 # Contributors
 Notable contributors are listed below:
