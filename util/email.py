@@ -19,8 +19,8 @@ def is_valid_email(email: str):
 
 	if(not re.search(regex, email)):
 		return False
-	
+
 	if set('+').intersection(email):  # to prevent people from making extra email addresses
 		return False
 
-	return True 
+	return True
