@@ -104,7 +104,7 @@ If the code is valid, they will be given a role, allowing access to the rest of 
 # Commands
 Here is a full list of the commands the bot offers:
 
-| Command | Description | Permissions Required | Usage |
+| Command | Description | Permissions Required | Usage* |
 |---------|-------------|----------------------|-------|
 | vhelp | Displays an informative message about how to use the email and verify commands. | None | vhelp |
 | email | Sends a verification email to a provided email account. | None | email <email: str> |
@@ -116,7 +116,7 @@ Here is a full list of the commands the bot offers:
 | reactorget | Get all reactors in the server | Manage Server | reactorget |
 |reactorclearall | Removes all reactors in the server. | Manage Server | reactorclearall |
 
-`<>` = required, `[]` = optional
+\* `<>` = required, `[]` = optional
 
 ## Command Notes
 ### Email
