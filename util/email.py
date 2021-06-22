@@ -17,7 +17,7 @@ def is_valid_email(email: str):
 	# 	\b (ending boundary)
 	regex = r"\b[\w.%-]{1,64}@[\w.-]{1,255}\.[a-zA-Z-]{2,}\b"
 
-	if(not re.search(regex, email)):
+	if not re.fullmatch(regex, email):
 		return False
 
 	if set('+').intersection(email):  # to prevent people from making extra email addresses
