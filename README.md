@@ -46,9 +46,9 @@ If the code is valid, they will be given a role, allowing access to the rest of 
 # Setup
 ## Docker
 **Recommended Method**
-1. To start, verify Docker is installed. If it is not or you don't know, go [here](https://docs.docker.com/get-docker/) to download Docker. Also, if on Linux or WSL, download *docker-compose* [here](https://docs.docker.com/compose/install/).
+1. To start, verify Docker is installed. If it is not or you don't know, go [here](https://docs.docker.com/get-docker/) to download Docker. Also, if on Linux or WSL, download the `docker-compose.yml` [here](https://docs.docker.com/compose/install/).
 
-2. Download the *docker-compose.yml* from above and move it to a desired directory. Open it with notepad or your text editor of choice and add your environmental variables (token, key, domain, etc.).
+2. Download the `docker-compose.yml` from above and move it to a desired directory. Open it with notepad or your text editor of choice and add your environmental variables (token, key, domain, etc.).
 
 3. A bot token needs to be created to run this bot. You can find the Discord Developers Portal [here](https://discord.com/developers/applications). If you need help making a bot account, [Google](https://letmegooglethat.com/?q=how+to+make+a+discord+bot) is your friend.
 
