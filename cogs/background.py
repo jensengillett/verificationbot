@@ -14,6 +14,10 @@ class Background(commands.Cog):
 
 	@commands.Cog.listener("on_message")
 	async def on_message(self, message):
+
+		if message.author.bot:
+			return
+
 		channel = message.channel
 		content = str(message.content).lower()
 

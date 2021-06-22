@@ -1,6 +1,7 @@
 import copy
 
 import discord
+from discord.errors import InvalidArgument
 from discord.ext import commands
 from discord.ext.commands import errors as cmderr
 
@@ -22,6 +23,8 @@ class Errors(commands.Cog):
 			await ctx.channel.send("Missing required role to use this command!")
 		elif isinstance(exception, cmderr.MissingRequiredArgument):
 			await ctx.channel.send("Missing required arguments!")
+		elif isinstance(exception, cmderr.UserInputError):
+			await ctx.channel.send("Missing or invalid argument!")
 		elif isinstance(exception, cmderr.CommandNotFound):
 
 			# If the attempted command is a valid email, run the email command
