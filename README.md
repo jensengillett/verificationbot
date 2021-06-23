@@ -1,6 +1,8 @@
 # VerificationBot
 ![License](https://img.shields.io/github/license/jensengillett/verificationbot?color=6cc644&label=License&style=flat-square)
 ![Repo Stars](https://img.shields.io/github/stars/jensengillett/verificationbot?color=6e5494&label=Stars&logo=github&logoColor=white&style=flat-square)
+
+<!-- Social Shields -->
 <!-- [![Twitter](https://img.shields.io/twitter/follow/dakaosjr?color=1da1f2&label=Follow%20@dakaosjr&logo=twitter&logoColor=white&style=flat-square)](https://twitter.com/intent/follow?screen_name=dakaosjr)
 [![Twitter](https://img.shields.io/twitter/follow/miningmark48?color=1da1f2&label=Follow%20@miningmark48&logo=twitter&logoColor=white&style=flat-square)](https://twitter.com/intent/follow?screen_name=miningmark48) -->
 
@@ -42,6 +44,8 @@ Once they run the command and if the email is valid (matches the set domain), th
 `!verify 1234`
 
 If the code is valid, they will be given a role, allowing access to the rest of the server (or however configured).
+
+---
 
 # Setup
 ## Docker
@@ -101,6 +105,8 @@ If the code is valid, they will be given a role, allowing access to the rest of 
 
 7. Congratulations! Assuming all went well and everything is installed correctly you should have a running Discord bot!
 
+---
+
 # Commands
 Here is a full list of the commands the bot offers:
 
@@ -129,6 +135,8 @@ There are a variety of extra handlers to help aid people that can't quite follow
 
 These are primarily there to assist people new to Discord or who can't follow instructions. The *vhelp* command encourages use of the proper form, \<alias>email [email@email.com].
 
+---
+
 # Contributors
 Notable contributors are listed below:
 
@@ -137,6 +145,8 @@ Notable contributors are listed below:
 | [MiningMark48](https://github.com/MiningMark48) | Wrote the initial draft of the bot, reactor module, and data handlers to integrate to *sqlalchemy*, rewrote the bot to use Discord.py Cogs, and implemented miscellaneous commands and features. |
 | [aabuelazm](https://github.com/aabuelazm) | Wrote the [Dockerfile](/Dockerfile) and implemented environmental variables to `bot.py` for easy Docker container deployment. |
 | [MNThomson](https://github.com/MNThomson) | Fixed vulnerabilities |
+
+---
 
 # Support Development
 If you use this bot on your server, feel free to credit me by linking to this repository. 
@@ -159,3 +169,4 @@ Although this repo is being given support and updates, it is limited. If [Discor
 
 Major security patches and API changes may result in an update, or may result in support being dropped. If support is dropped indefinitely, this file will be updated to note that the bot is now deprecated and the repo will be archived and set to read-only. At the moment, this is unlikely and not in the forseeable future.
 
+---
