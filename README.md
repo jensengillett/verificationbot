@@ -30,9 +30,9 @@
 ### Background
 VerificationBot started as a small project for the UVic Engineering and Computer Science Discord server due to a growing server population. We wanted to make an automated system to prevent non-UVic students from accessing the remainder of the Discord server. With this goal in mind, and with the help of [MiningMark48](https://github.com/miningmark48), the initial draft of the bot was created.
 
-Since its initial creation, the bot has been an excellent stopgap for keeping non-UVic students from accessing our Discord server. With our goal accomplished, other servers started to take notice. Thanks to the Fall 2020 semester being fully online due to the pandemic, many more Discord servers were being created, some with thousands of members. With these numerous servers, a lack of a verification system was becoming a concern. 
+Since its initial creation, the bot has been an excellent method for keeping non-UVic students from accessing our Discord server. With our goal accomplished, other servers began to take notice. Thanks to the Fall 2020 semester being fully online due to the pandemic, many more Discord servers were being created, some with thousands of members. With these numerous servers, a lack of a verification system was becoming a concern. 
 
-From this point, the bot was rewritten; going from a single-file bot to a multiple-file, fully modularized machine. What once wasn't possible, now the bot was able to be controlled better than before, now with the use of a [config](./docker-compose.yml).
+From this point, the bot was rewritten; going from a single-file bot to a multiple-file, fully modularized machine. What once wasn't possible, the bot was now able to be controlled better than before, thanks to the use of a [config](./docker-compose.yml).
 
 ### How Does it Work?
 When users join a Discord server, they are given access to limited channels, one of which allows them to send in their university or institutional email with the help of a bot command.
@@ -142,7 +142,7 @@ Notable contributors are listed below:
 
 | Contributor | Contribution |
 |-------------|--------------|
-| [MiningMark48](https://github.com/MiningMark48) | Wrote the initial draft of the bot, reactor module, and data handlers to integrate to *sqlalchemy*, rewrote the bot to use Discord.py Cogs, and implemented miscellaneous commands and features. |
+| [MiningMark48](https://github.com/MiningMark48) | Wrote the initial draft of the bot, reactor module, and data handlers to integrate to [sqlalchemy](https://pypi.org/project/SQLAlchemy/), rewrote the bot to use [Discord.py *Cogs*](https://discordpy.readthedocs.io/en/latest/ext/commands/cogs.html), and implemented miscellaneous commands and features. |
 | [aabuelazm](https://github.com/aabuelazm) | Wrote the [Dockerfile](/Dockerfile) and implemented environmental variables to `bot.py` for easy Docker container deployment. |
 | [MNThomson](https://github.com/MNThomson) | Fixed vulnerabilities |
 
