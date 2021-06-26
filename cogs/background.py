@@ -22,18 +22,32 @@ class Background(commands.Cog):
 		content = str(message.content).lower()
 
 		if str(channel.id) == str(self.channel_id):
-			email_cmd = self.bot.get_command("email")
-			cmd_aliases = email_cmd.aliases
 
-			for a in cmd_aliases:
-				a = str(a).lower()
-				if content.startswith(a):
-					content = content.replace(f"{a} ", "", 1)
-					break
+			def clean_aliases(message_content: str, aliases: list):
+				for a in aliases:
+					a = str(a).lower()
+					if message_content.startswith(a):
+						message_content = message_content.replace(f"{a} ", "", 1)
+						message_content = message_content.replace(a, "", 1)
+						break
+				return message_content
+
+			async def invoke_cmd(cmd, message_content):
+				ctx = await self.bot.get_context(message)
+				await ctx.invoke(cmd, message_content)
+
+			# If the attempted command is a valid email, run the email command
+			email_cmd = self.bot.get_command("email")
+			content = clean_aliases(content, email_cmd.aliases)
 
 			if is_valid_email(content):
-				ctx = await self.bot.get_context(message)
-				return await ctx.invoke(email_cmd, content)
+				return await invoke_cmd(email_cmd, content)
+
+			verify_cmd = self.bot.get_command("verify")
+			content = clean_aliases(content, verify_cmd.aliases)
+
+			if len(content) == 4 and content.isnumeric():
+				return await invoke_cmd(verify_cmd, content)
 
 
 def setup(bot):
