@@ -15,7 +15,7 @@ current_dir = osp.dirname(__file__)  # grab the current system directory on an o
 data_path = "data"  # folder name
 
 # The extensions ("cogs") to load
-extensions = ["background", "errors", "misc", "reactor", "utility", "verification"]
+extensions = ["errors", "misc", "reactor", "utility", "verification", "verify_wizard"]
 
 # Load new intents system. This is required for the new reactors functionality.
 intents = discord.Intents.default()

@@ -74,7 +74,7 @@ class Verification(commands.Cog):
 	# The email command handles all the checks done before an email is sent out alongside the actual email sending.
 	# It's very complicated.
 	@commands.command(name="email", aliases=["mail", "send", "Email", "Mail", "Send"])
-	async def _email(self, ctx, arg):
+	async def _email(self, ctx, arg, hide_feedback=False):
 		"""
 		Sends an email containing a token to verify the user
 		Parameters
@@ -138,7 +138,8 @@ class Verification(commands.Cog):
 				print("")
 
 			if dm == self.verify_domain and not maxedOut:  # Send the actual email.
-				await ctx.send("Sending verification email...")
+				if not hide_feedback:
+					await ctx.send("Sending verification email...")
 				with smtplib.SMTP_SSL(self.email_server, self.email_port, context=ssl.create_default_context()) as server:
 					server.login(self.email_from, self.email_password)
 					token = random.randint(1000, 9999)
@@ -154,7 +155,8 @@ class Verification(commands.Cog):
 					server.sendmail(self.email_from, arg, message)
 					server.quit()
 
-				await ctx.send(f"Verification email sent, do `{self.bot_key}verify ####`, where `####` is the token, to verify.")
+				if not hide_feedback:
+					await ctx.send(f"Verification email sent, do `{self.bot_key}verify ####`, where `####` is the token, to verify.")
 
 				if self.email_attempts:
 					if ctx.author.id in self.email_attempts:
@@ -207,7 +209,7 @@ class Verification(commands.Cog):
 
 			if self.token_list:
 				if self.token_list[ctx.author.id] == arg:
-					await ctx.send(f"{ctx.author.mention}, you've been verified!")
+					await ctx.send(f"{ctx.author.mention}, you've been verified!", delete_after=10)
 
 					role = discord.utils.get(ctx.guild.roles, name=self.role)
 					if not role:
