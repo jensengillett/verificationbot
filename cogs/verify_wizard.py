@@ -31,9 +31,11 @@ class VerifyWizard(commands.Cog):
 			return m.author == author and m.channel == channel
 
 		async def abort():
+			await message.reply("It's ok! I'm here if you need me!", delete_after=10)
 			self.in_convo.remove(author.id)
+			await asyncio.sleep(2)
 			await self.prune(prune_messages)
-			return await message.reply("It's ok! I'm here if you need me!", delete_after=10)
+			return
 
 		def is_yes(answer: str):
 			return answer.lower() in ["yes", "y"]
@@ -47,8 +49,10 @@ class VerifyWizard(commands.Cog):
 		if author.id in self.in_convo:
 			return
 
+		yes_no_str = "**[Yes (Y) / No (N)]**"
+
 		self.in_convo.append(author.id)
-		wizard_msg = await message.reply("Hello! Are you trying to verify your account? [Yes (Y) / No (N)]")
+		wizard_msg = await message.reply(f"Hello! Are you trying to verify your account? {yes_no_str}")
 		prune_messages.append(wizard_msg)
 		prune_messages.append(message)
 
@@ -60,8 +64,8 @@ class VerifyWizard(commands.Cog):
 		cleaned_response = response.clean_content.lower()
 		prune_messages.append(response)
 
-		if is_yes(cleaned_response):  	# Response == Yes
-			wizard_msg = await response.reply("Have you received a verification email yet? [Yes (Y) / No (N)]")
+		if is_yes(cleaned_response):
+			wizard_msg = await response.reply(f"Have you received a verification email yet? {yes_no_str}")
 			prune_messages.append(wizard_msg)
 
 			try:
@@ -86,7 +90,7 @@ class VerifyWizard(commands.Cog):
 
 				if len(cleaned_response) != 4 or not cleaned_response.isnumeric():
 					self.in_convo.remove(author.id)
-					return await response.reply("That's not a valid token!", delete_after=10)
+					return await response.reply("That's not a valid verification token!", delete_after=10)
 
 				email_cmd = self.bot.get_command("verify")
 				ctx = await self.bot.get_context(message)
@@ -114,7 +118,7 @@ class VerifyWizard(commands.Cog):
 				ctx = await self.bot.get_context(message)
 				await ctx.invoke(email_cmd, cleaned_response, True)
 
-				wizard_msg = await response.reply("The email has been sent! Come back to me once you have received it!")
+				wizard_msg = await response.reply("The email has been sent! Come back once you have received it!")
 				prune_messages.append(wizard_msg)
 				self.in_convo.remove(author.id)
 
