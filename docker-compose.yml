@@ -37,7 +37,7 @@ services:
       - channel_id=
       # The channel id for a channel for bot alerts (i.e. mod-only)
       - notify_id=
-      # The user if for a user to ping if an email is already used
+      # The user id for a user to ping if an email is already used
       - admin_id=
       # The name sent addressing the person in the email
       - author_name=
