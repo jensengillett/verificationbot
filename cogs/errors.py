@@ -1,4 +1,5 @@
 import copy
+from re import VERBOSE
 
 import discord
 from discord.errors import InvalidArgument
@@ -27,20 +28,35 @@ class Errors(commands.Cog):
 			await ctx.channel.send("Missing or invalid argument!")
 		elif isinstance(exception, cmderr.CommandNotFound):
 
+			message_content = ctx.message.content.replace(ctx.prefix, "")
+
+			def clean_aliases(message_content: str, aliases: list):
+				for a in aliases:
+					a = str(a).lower()
+					if message_content.startswith(a):
+						message_content = message_content.replace(f"{a} ", "", 1)
+						message_content = message_content.replace(a, "", 1)
+						break
+				return message_content
+
+			async def invoke_cmd(ctx, cmd, message_content):
+				msg = copy.copy(ctx.message)
+				msg.content = message_content
+				ctx = await self.bot.get_context(msg)
+				await ctx.invoke(cmd, message_content)
+
 			# If the attempted command is a valid email, run the email command
-			email = ctx.message.content.replace(ctx.prefix, "")
 			email_cmd = self.bot.get_command("email")
-			cmd_aliases = email_cmd.aliases
+			message_content = clean_aliases(message_content, email_cmd.aliases)
 
-			for a in cmd_aliases:
-				a = str(a).lower()
-				if email.startswith(a):
-					email = email.replace(f"{a} ", "", 1)
-					break
+			if is_valid_email(message_content):
+				return await invoke_cmd(ctx, email_cmd, message_content)
 
-			if is_valid_email(email):
-				ctx = await self.bot.get_context(email)
-				await ctx.invoke(email_cmd, email)
+			verify_cmd = self.bot.get_command("verify")
+			message_content = clean_aliases(message_content, verify_cmd.aliases)
+
+			if len(message_content) == 4 and message_content.isnumeric():
+				return await invoke_cmd(ctx, verify_cmd, message_content)
 
 		else:
 			print(exception)
