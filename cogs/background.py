@@ -28,8 +28,7 @@ class Background(commands.Cog):
 		content = str(message.content).lower()  # ignore case sensitivity, it doesn't matter for emails anyway
 
 		if str(channel.id) == str(self.channel_id):  # check if we're in the right channel
-      
-      def clean_aliases(message_content: str, aliases: list):
+			def clean_aliases(message_content: str, aliases: list):
 				for a in aliases:
 					a = str(a).lower()
 					if message_content.startswith(a):
@@ -37,29 +36,27 @@ class Background(commands.Cog):
 						message_content = message_content.replace(a, "", 1)
 						break
 				return message_content
-      
-      async def invoke_cmd(cmd, message_content):
+
+			async def invoke_cmd(cmd, message_content):
 				ctx = await self.bot.get_context(message)
 				await ctx.invoke(cmd, message_content)
-      
+
 			# grab the email command so we can check the aliases list
 			email_cmd = self.bot.get_command("email")
-      vhelp_cmd = self.bot.get_command("vhelp")  # grab the vhelp command
+			#vhelp_cmd = self.bot.get_command("vhelp")  # grab the vhelp command
 			content = clean_aliases(content, email_cmd.aliases)
-
-			# get the message context to pass on
-			ctx = await self.bot.get_context(message)
 
 			if is_valid_email(content):  # check if we're dealing with an email
 				return await invoke_cmd(email_cmd, content)
-      
-      verify_cmd = self.bot.get_command("verify")
+
+			verify_cmd = self.bot.get_command("verify")
 			content = clean_aliases(content, verify_cmd.aliases)
 
 			if len(content) == 4 and content.isnumeric():
 				return await invoke_cmd(verify_cmd, content)
-			else:  # not an email
-				return await invoke_cmd(vhelp_cmd, content)  # invoke the vhelp command for our poor users
+			# Issue: this fires every time any message is sent, *including* commands. I don't know how that got missed.
+			#else:  # not an email
+				#return await invoke_cmd(vhelp_cmd, content)  # invoke the vhelp command for our poor users
 
 
 def setup(bot):

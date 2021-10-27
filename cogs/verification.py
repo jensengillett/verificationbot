@@ -53,8 +53,9 @@ class Verification(commands.Cog):
 		self.verify_attempts = {}
 
 	# Instructions on how to verify.
+	# noinspection PyUnusedLocal
 	@commands.command(name="vhelp", aliases=["helpme", "help_me", "verify_help", "Vhelp", "Helpme", "Help_me", "Verify_help"])
-	async def verify_help(self, ctx):
+	async def verify_help(self, ctx, *args):
 		"""
 		Help on how to verify.
 		"""
