@@ -147,10 +147,11 @@ class Verification(commands.Cog):
 					self.email_list[ctx.author.id] = arg
 					verify_email = ctx.guild.get_channel(self.channel_id)
 
-					message_text = f"Hello {self.author_name},\n\nThe command to use in {verify_email.name} is: " \
-						f"\n\n{self.bot_key}verify {token}\n\nMake sure you paste that entire line into the chat, and press enter to " \
-						f"send the message. \n\nThank you for joining our Discord server! \n\nThis message was sent automatically " \
-						f"by a bot. If you did not request this message, please contact {self.moderator_email} to report this incident."
+					message_text = f"Hello {self.author_name}! Thank you for joining the ECS Discord Server! \n\n" \
+						f"The command to use in the #{verify_email.name} channel is: {self.bot_key}verify {token}\n\n" \
+						f"You can copy and paste that command into the #{verify_email.name} channel to verify. \n\n" \
+						f"This message was sent by the UVic Engineering Bot. \n" \
+						f"If you did not request to verify, please contact {self.moderator_email} to let us know."
 					message = f"Subject: {self.email_subject}\n\n{message_text}"
 					server.sendmail(self.email_from, arg, message)
 					server.quit()
