@@ -1,8 +1,8 @@
 import copy
-from re import VERBOSE
+# from re import VERBOSE
 
-import discord
-from discord.errors import InvalidArgument
+# import discord
+# from discord.errors import InvalidArgument
 from discord.ext import commands
 from discord.ext.commands import errors as cmderr
 

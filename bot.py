@@ -33,7 +33,7 @@ used_emails = None
 bot_key = None
 hash_key = None
 
-# Start config loading from disk.
+# Start config loading from environment variables.
 try:
 	print("Loading config...")
 
@@ -54,6 +54,7 @@ random.seed(bot_token)
 used_emails = osp.join(current_dir, data_path, used_emails)
 
 
+# noinspection PyUnusedLocal
 def prefix(bot, message):
 	pfx = bot_key
 
