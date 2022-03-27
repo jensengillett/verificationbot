@@ -110,17 +110,19 @@ If the code is valid, they will be given a role, allowing access to the rest of 
 # Commands
 Here is a full list of the commands the bot offers:
 
-| Command | Description | Permissions Required | Usage* |
-|---------|-------------|----------------------|-------|
-| vhelp | Displays an informative message about how to use the email and verify commands. | None | vhelp |
-| email | Sends a verification email to a provided email account. | None | email <email: str> |
-| verify | Uses the token sent to the email account to verify the user. | None | verify <token: int> |
-| support | Replies with links to financially and socially support the authors and contributors of this bot | None | support |
-| prune | Prunes the most recent *n* amount of messages in a channel. | Manage Server | prune <amount: int> |
-| reactoradd | Adds a reactor to a message | Manage Server | reactoradd <message_id: str> <role_id: str> <emote: emote> |
-| reactordelete | Removes all reactors from a message. | Manage Server | reactordelete <message_id: str> |
-| reactorget | Get all reactors in the server | Manage Server | reactorget |
-|reactorclearall | Removes all reactors in the server. | Manage Server | reactorclearall |
+| Command         | Description                                                                                                 | Permissions Required | Usage*                                                     |
+|-----------------|-------------------------------------------------------------------------------------------------------------|----------------------|------------------------------------------------------------|
+| vhelp           | Displays an informative message about how to use the email and verify commands.                             | None                 | vhelp                                                      |
+| email           | Sends a verification email to a provided email account.                                                     | None                 | email <email: str>                                         |
+| verify          | Uses the token sent to the email account to verify the user.                                                | None                 | verify <token: int>                                        |
+| support         | Replies with links to financially support the authors and contributors of this bot, and a link to this repo | None                 | support                                                    |
+| uptime          | Tells you how long this instance of the bot has been running for.                                           | None                 | uptime                                                     |
+| prune           | Prunes the most recent *n* amount of messages in a channel.                                                 | Manage Server        | prune <amount: int>                                        |
+| modverify       | Allows you to manually verify a user, bypassing the main verification system.                               | Manage Server        | modverify <email: str> <userid: int>                       |
+| reactoradd      | Adds a reactor to a message                                                                                 | Manage Server        | reactoradd <message_id: str> <role_id: str> <emote: emote> |
+| reactordelete   | Removes all reactors from a message.                                                                        | Manage Server        | reactordelete <message_id: str>                            |
+| reactorget      | Get all reactors in the server                                                                              | Manage Server        | reactorget                                                 |
+| reactorclearall | Removes all reactors in the server.                                                                         | Manage Server        | reactorclearall                                            |
 
 \* `<>` = required, `[]` = optional
 
@@ -140,11 +142,11 @@ These are primarily there to assist people new to Discord or who can't follow in
 # Contributors
 Notable contributors are listed below:
 
-| Contributor | Contribution |
-|-------------|--------------|
+| Contributor                                     | Contribution                                                                                                                                                                                                                                                                                                  |
+|-------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [MiningMark48](https://github.com/MiningMark48) | Wrote the initial draft of the bot, reactor module, and data handlers to integrate to [sqlalchemy](https://pypi.org/project/SQLAlchemy/), rewrote the bot to use [Discord.py *Cogs*](https://discordpy.readthedocs.io/en/latest/ext/commands/cogs.html), and implemented miscellaneous commands and features. |
-| [aabuelazm](https://github.com/aabuelazm) | Wrote the [Dockerfile](/Dockerfile) and implemented environmental variables to `bot.py` for easy Docker container deployment. |
-| [MNThomson](https://github.com/MNThomson) | Fixed vulnerabilities |
+| [aabuelazm](https://github.com/aabuelazm)       | Wrote the [Dockerfile](/Dockerfile) and implemented environmental variables to `bot.py` for easy Docker container deployment.                                                                                                                                                                                 |
+| [MNThomson](https://github.com/MNThomson)       | Fixed vulnerabilities                                                                                                                                                                                                                                                                                         |
 
 ---
 

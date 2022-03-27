@@ -77,6 +77,7 @@ class Verification(commands.Cog):
 	# The email command handles all the checks done before an email is sent out alongside the actual email sending.
 	# It's very complicated.
 	@commands.command(name="email", aliases=["mail", "send", "Email", "Mail", "Send"])
+	@commands.guild_only()
 	async def _email(self, ctx, arg):
 		"""
 		Sends an email containing a token to verify the user
@@ -113,7 +114,9 @@ class Verification(commands.Cog):
 						await ctx.send(
 							f"Error! That email has already been used! If you believe this is an error or are trying to "
 							f"re-verify, please contact {admin.mention} in this channel or through direct message. Thanks!")
+						file.close()
 						return
+					file.close()
 			except FileNotFoundError:
 				print("Used emails file hasn't been created yet, continuing...")
 
@@ -123,6 +126,7 @@ class Verification(commands.Cog):
 						sendIn = ctx.guild.get_channel(self.notify_id)
 						await sendIn.send(
 							f"Alert! Email on warning list used. Discord ID: {ctx.author.mention}, email `{arg}`.")
+					file.close()
 			except FileNotFoundError:
 				print("Warning list file not found, ignoring.")
 
@@ -175,7 +179,7 @@ class Verification(commands.Cog):
 	@commands.guild_only()
 	async def _verify(self, ctx, arg):
 		"""
-		Verifies a user with a token that was previously email.
+		Verifies a user with a token that was previously emailed.
 		For use after the 'email' command.
 		Parameters
 		------------
@@ -193,7 +197,9 @@ class Verification(commands.Cog):
 						await ctx.send(
 							"Error! That email has already been used! If you believe this is an error or are trying to "
 							"re-verify, please contact a moderator in this channel or through direct message. Thanks!")
+						file.close()
 						return
+					file.close()
 			except FileNotFoundError:
 				print("Used emails file hasn't been created yet, continuing...")
 
@@ -221,6 +227,7 @@ class Verification(commands.Cog):
 					with open(self.used_emails, 'a') as file:  # Writes used emails to file for verification
 						hashed = self.bot.hashing.hash(self.email_list[ctx.author.id])
 						file.write(f"{hashed}\n")
+						file.close()
 				else:
 					await ctx.send(f"Invalid token {ctx.author.mention}!")
 					if self.verify_attempts:
@@ -233,6 +240,45 @@ class Verification(commands.Cog):
 
 			else:
 				print("Array does not exist yet! Verify will return nothing!")
+
+	@commands.command(name="mod_verify", aliases=["manual_verify", "modverify", "manualverify", "addemail", "verifyadd"])
+	@commands.guild_only()
+	@commands.has_permissions(manage_messages=True)
+	async def _manual_verify(self, ctx, email: str, userid: int):
+		"""Manually add a user's email to the verified emails list without going through the actual verification process.
+		Useful if the main verification process is failing for other reasons, but you still want to blacklist the email from future use.
+		Parameters
+		-----------
+		email: string [Required]
+			The email to add to the used emails list.
+		"""
+		print(f"Manually adding {email} to the used emails list.")
+
+		# Check if the email's already in the file.
+		try:
+			with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
+				if any(self.bot.hashing.check_hash(str(self.email_list[ctx.author.id]), str(line).strip('\n')) for line
+					   in file):
+					await ctx.send(f"{ctx.author.mention}, the email {email} is already in the used emails list.")
+					return
+		except FileNotFoundError:
+			print("Used emails file hasn't been created yet, continuing...")
+
+		user = await self.bot.fetch_user(userid)
+		if user is not None:
+			role = discord.utils.get(ctx.guild.roles, name=self.role)
+			if not role:
+				role = discord.utils.find(lambda r: str(r.id) == str(self.role), ctx.guild.roles)
+			await user.add_roles(role)  # This *should* work according to stackoverflow. I sure hope it does.
+
+			with open(self.used_emails, 'a') as file:  # Writes used emails to file for verification
+				hashed = self.bot.hashing.hash(self.email_list[ctx.author.id])
+				file.write(f"{hashed}\n")
+				file.close()
+
+			await ctx.send(f"{ctx.author.mention}, the user {user.mention} has been manually verified with the email {email}.")
+		else:  # if user isn't found
+			await ctx.send(f"{ctx.author.mention}, the user with id {userid} was not found.")
 
 
 def setup(bot):
