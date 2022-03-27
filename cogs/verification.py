@@ -39,6 +39,7 @@ class Verification(commands.Cog):
 			self.channel_id = int(self.channel_id)
 			self.notify_id = int(self.notify_id)
 			self.admin_id = int(self.admin_id)
+			self.email_port = int(self.email_port)
 
 			self.used_emails = osp.join(self.bot.current_dir, self.bot.data_path, self.used_emails)
 			self.warn_emails = osp.join(self.bot.current_dir, self.bot.data_path, self.warn_emails)
@@ -69,6 +70,7 @@ class Verification(commands.Cog):
 			f"command again. **Send the command provided in the email** as a message in the {verify_email.mention} channel "
 			f"to gain access to the rest of the server."
 			f"\n\n**You can access your webmail at {self.webmail_link}**"
+			f"\nMake sure to check your junk email folder for the message in case it gets sent there."
 			f"\n\n**Send messages in the {verify_email.mention} channel to use this "
 			f"bot's commands, not in a DM.**")
 
@@ -81,7 +83,7 @@ class Verification(commands.Cog):
 		Parameters
 		------------
 		email: str [Required]
-			The email that the token will be send to.
+			The email that the token will be sent to.
 		"""
 
 		if ctx.channel.id == self.channel_id:

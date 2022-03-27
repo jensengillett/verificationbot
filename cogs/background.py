@@ -12,7 +12,7 @@ class Background(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		try:
-			self.channel_id = os.environ["channel_id"]  # grab verification channel ID so we know which channel to watch
+			self.channel_id = os.environ["channel_id"]  # grab verification channel ID, so we know which channel to watch
 		except KeyError as e:
 			print(f"Key not loaded!\n\t{e}")  # bad user
 
@@ -41,7 +41,7 @@ class Background(commands.Cog):
 				ctx = await self.bot.get_context(message)
 				await ctx.invoke(cmd, message_content)
 
-			# grab the email command so we can check the aliases list
+			# grab the email command, so we can check the aliases list
 			email_cmd = self.bot.get_command("email")
 			#vhelp_cmd = self.bot.get_command("vhelp")  # grab the vhelp command
 			content = clean_aliases(content, email_cmd.aliases)
