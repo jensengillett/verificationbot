@@ -252,13 +252,13 @@ class Verification(commands.Cog):
 		email: string [Required]
 			The email to add to the used emails list.
 		"""
-		print(f"Manually adding {email} to the used emails list.")
+		print(f"Manually adding {email} to the used emails list for user {userid}.")
 
 		# Check if the email's already in the file.
 		try:
 			with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
-				if any(self.bot.hashing.check_hash(str(self.email_list[ctx.author.id]), str(line).strip('\n')) for line
-					   in file):
+				if any(self.bot.hashing.check_hash(str(email.lower()), str(line).strip('\n')) for line in file):
+					print(f"{email} already present in the emails list!")
 					await ctx.send(f"{ctx.author.mention}, the email {email} is already in the used emails list.")
 					return
 		except FileNotFoundError:
@@ -266,6 +266,7 @@ class Verification(commands.Cog):
 
 		user = await self.bot.fetch_user(userid)
 		if user is not None:
+			print(f"User with id {userid} found")
 			role = discord.utils.get(ctx.guild.roles, name=self.role)
 			if not role:
 				role = discord.utils.find(lambda r: str(r.id) == str(self.role), ctx.guild.roles)
@@ -275,9 +276,10 @@ class Verification(commands.Cog):
 				hashed = self.bot.hashing.hash(self.email_list[ctx.author.id])
 				file.write(f"{hashed}\n")
 				file.close()
-
+			print(f"Manually verified user {userid} with email {email}")
 			await ctx.send(f"{ctx.author.mention}, the user {user.mention} has been manually verified with the email {email}.")
 		else:  # if user isn't found
+			print(f"User with id {userid} not found")
 			await ctx.send(f"{ctx.author.mention}, the user with id {userid} was not found.")
 
 
