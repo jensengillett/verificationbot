@@ -28,7 +28,8 @@ class Utility(commands.Cog):
 	@commands.command(name="uptime", aliases=["Uptime", "up-time", "Up-time", "up", "time", "Up", "Time"])
 	async def uptime(self, ctx):
 		"""Check how long the bot script has been running for.
-		Thanks to https://stackoverflow.com/questions/62483161/discord-py-uptime"""
+		Thanks to https://stackoverflow.com/questions/62483161/discord-py-uptime
+		"""
 
 		uptime = str(datetime.timedelta(seconds=int(round(time.time()-start_time))))
 		await ctx.send(f"This bot has been running for {uptime}.")
