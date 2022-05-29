@@ -1,8 +1,7 @@
 import os.path as osp
 import os
-# import smtplib
-# import ssl
 import random
+import time
 
 import discord
 from discord.ext import commands
@@ -47,8 +46,8 @@ except KeyError as e:
 	print(f"Config error.\n\tKey Not Loaded: {e}")
 	do_run = False
 
-# Seed the random number generator from the bot token.
-random.seed(bot_token)
+# Seed the random number generator from the system time. (This used to be the bot token. I'm not sure why.)
+random.seed(int(time.time()))
 
 # From the used_emails filename, load the data from the data folder. This can be commented out if not using a data folder.
 used_emails = osp.join(current_dir, data_path, used_emails)
