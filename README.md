@@ -117,12 +117,14 @@ Here is a full list of the commands the bot offers:
 | verify          | Uses the token sent to the email account to verify the user.                                                | None                 | verify <token: int>                                        |
 | support         | Replies with links to financially support the authors and contributors of this bot, and a link to this repo | None                 | support                                                    |
 | uptime          | Tells you how long this instance of the bot has been running for.                                           | None                 | uptime                                                     |
+| activetokens    | Notifies the 'notification channel' of which users have incomplete verifications in progress.               | None                 | activetokens                                               |
 | prune           | Prunes the most recent *n* amount of messages in a channel.                                                 | Manage Server        | prune <amount: int>                                        |
 | modverify       | Allows you to manually verify a user, bypassing the main verification system.                               | Manage Server        | modverify <email: str> <userid: int>                       |
 | reactoradd      | Adds a reactor to a message                                                                                 | Manage Server        | reactoradd <message_id: str> <role_id: str> <emote: emote> |
 | reactordelete   | Removes all reactors from a message.                                                                        | Manage Server        | reactordelete <message_id: str>                            |
 | reactorget      | Get all reactors in the server                                                                              | Manage Server        | reactorget                                                 |
 | reactorclearall | Removes all reactors in the server.                                                                         | Manage Server        | reactorclearall                                            |
+
 
 \* `<>` = required, `[]` = optional
 
