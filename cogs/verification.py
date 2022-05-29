@@ -72,7 +72,7 @@ class Verification(commands.Cog):
 			f"\n\n**You can access your webmail at {self.webmail_link}**"
 			f"\nMake sure to check your junk email folder for the message in case it gets sent there."
 			f"\n\n**Send messages in the {verify_email.mention} channel to use this "
-			f"bot's commands, not in a DM.**")
+			f"bots commands, not in a DM.**")
 
 	# The email command handles all the checks done before an email is sent out alongside the actual email sending.
 	# It's very complicated.
@@ -173,7 +173,8 @@ class Verification(commands.Cog):
 					self.email_attempts[ctx.author.id] = 1
 
 			else:
-				await ctx.send(f"Invalid email {ctx.author.mention}!")
+				await ctx.send(f"Invalid email submitted, {ctx.author.mention}! Please submit an email in the format "
+							   f"`{self.bot_key}email {self.sample_username}@{self.verify_domain}` to verify your email.")
 
 	@commands.command(name="verify", aliases=["token", "Verify", "Token"])
 	@commands.guild_only()
@@ -229,7 +230,7 @@ class Verification(commands.Cog):
 						file.write(f"{hashed}\n")
 						file.close()
 				else:
-					await ctx.send(f"Invalid token {ctx.author.mention}!")
+					await ctx.send(f"Invalid token submitted, {ctx.author.mention}! Please submit the 4-digit token send to your email to verify.")
 					if self.verify_attempts:
 						if ctx.author.id in self.verify_attempts:
 							self.verify_attempts[ctx.author.id] += 1
@@ -281,6 +282,13 @@ class Verification(commands.Cog):
 		else:  # if user isn't found
 			print(f"User with id {userid} not found")
 			await ctx.send(f"{ctx.author.mention}, the user with id {userid} was not found.")
+
+	@commands.command(name="active_tokens", aliases=["verify_in_progress", "in_progress", "activetokens", "verifyinprogress", "inprogress"])
+	@commands.guild_only()
+	async def _active_tokens(self, ctx):
+		print(f"Printing active tokens to notification chat.")
+		sendIn = ctx.guild.get_channel(self.notify_id)
+		await sendIn.send(f"Active verification tokens: \n{self.token_list}")
 
 
 def setup(bot):
