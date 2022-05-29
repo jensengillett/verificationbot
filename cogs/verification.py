@@ -146,23 +146,28 @@ class Verification(commands.Cog):
 
 			if dm == self.verify_domain and not maxedOut:  # Send the actual email.
 				await ctx.send("Sending verification email...")
-				with smtplib.SMTP_SSL(self.email_server, self.email_port, context=ssl.create_default_context()) as server:
+				with smtplib.SMTP(self.email_server, self.email_port) as server:
+					server.ehlo()
+					if self.email_port == 587 or self.email_port == 465:
+						context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+						server.starttls(context=context)
+						server.ehlo()
 					server.login(self.email_from, self.email_password)
 					token = random.randint(1000, 9999)
 					self.token_list[ctx.author.id] = str(token)
 					self.email_list[ctx.author.id] = arg
 					verify_email = ctx.guild.get_channel(self.channel_id)
 
-					message_text = f"Hello {self.author_name}! Thank you for joining the ECS Discord Server! \n\n" \
+					message_text = f"Hello {self.author_name}! Thank you for joining our Discord server! \n\n" \
 						f"The command to use in the #{verify_email.name} channel is: {self.bot_key}verify {token}\n\n" \
 						f"You can copy and paste that command into the #{verify_email.name} channel to verify. \n\n" \
-						f"This message was sent by the UVic Engineering Bot. \n" \
+						f"This message was sent by a Discord verification bot. \n" \
 						f"If you did not request to verify, please contact {self.moderator_email} to let us know."
 					message = f"Subject: {self.email_subject}\n\n{message_text}"
 					server.sendmail(self.email_from, arg, message)
 					server.quit()
 
-				await ctx.send(f"Verification email sent, do `{self.bot_key}verify ####`, where `####` is the token, to verify.")
+				await ctx.send(f"Verification email sent to {ctx.author.mention}, please use `{self.bot_key}verify ####`, where `####` is the token, to verify.")
 
 				if self.email_attempts:
 					if ctx.author.id in self.email_attempts:
@@ -287,8 +292,11 @@ class Verification(commands.Cog):
 	@commands.guild_only()
 	async def _active_tokens(self, ctx):
 		print(f"Printing active tokens to notification chat.")
+		friendly_token_list = {}
+		for key in self.token_list:
+			friendly_token_list[f"<@{key}>"] = self.token_list[key]
 		sendIn = ctx.guild.get_channel(self.notify_id)
-		await sendIn.send(f"Active verification tokens: \n{self.token_list}")
+		await sendIn.send(f"Active verification tokens: \n{friendly_token_list}")
 
 
 def setup(bot):
