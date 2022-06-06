@@ -112,8 +112,9 @@ class Verification(commands.Cog):
 					if any(self.bot.hashing.check_hash(str(arg.lower()), str(line).strip('\n')) for line in file):
 						admin = await self.bot.fetch_user(self.admin_id)
 						await ctx.send(
-							f"Error! That email has already been used! If you believe this is an error or are trying to "
-							f"re-verify, please contact {admin.mention} in this channel or through direct message. Thanks!")
+							f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
+							f"error or are trying to re-verify, please contact {admin.mention} in this channel or through "
+							f"direct message. Thank you!")
 						file.close()
 						return
 					file.close()
@@ -200,9 +201,11 @@ class Verification(commands.Cog):
 			try:
 				with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
 					if any(self.bot.hashing.check_hash(str(self.email_list[ctx.author.id]), str(line).strip('\n')) for line in file):
+						admin = await self.bot.fetch_user(self.admin_id)
 						await ctx.send(
-							"Error! That email has already been used! If you believe this is an error or are trying to "
-							"re-verify, please contact a moderator in this channel or through direct message. Thanks!")
+							f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
+							f"error or are trying to re-verify, please contact {admin.mention} in this channel or through "
+							f"direct message. Thank you!")
 						file.close()
 						return
 					file.close()
