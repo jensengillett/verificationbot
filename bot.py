@@ -83,7 +83,7 @@ bot.remove_command('help')
 # Update discord presence when everything is successfully loaded.
 @bot.event
 async def on_ready():
-	await bot.change_presence(activity=discord.Activity(name="verifications", type=discord.ActivityType.watching))
+	await bot.change_presence(activity=discord.Activity(name=f"{bot_key}vhelp for verification help", type=discord.ActivityType.watching))
 	print(f'We have logged in as {bot.user}')
 
 
