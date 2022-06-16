@@ -91,24 +91,53 @@ class Verification(commands.Cog):
 			print(f'Emailing user {ctx.author.name}, email {arg}')  # This gets sent to the console only.
 			await ctx.message.delete()  # delete their email from the channel, to prevent it leaking.
 
+			# This is a bit of a hacky way to do an email attempt checking system. If someone tries to repeatedly use the email command, they will be blacklisted from further attempts.
+			maxedOut = False
+			try:
+				if self.email_attempts[ctx.author.id] >= 5:
+					maxedOut = True
+					await ctx.send(
+						f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a "
+						f"moderator for assistance with verifying if this is in error. Thanks!")
+					sendIn = ctx.guild.get_channel(self.notify_id)
+					await sendIn.send(
+						f"Alert! User {ctx.author.mention} has exceeded the amount of `!email` command uses.")
+					return
+			except:
+				print("")
+
+			# Split the email string into parts
 			try:
 				dm = arg.split('@')[1]  # split the string based on the @ symbol
 			except AttributeError:
 				await ctx.send("Error! That is not a valid email!")  # no @ symbol = no email
 				return
 
+			# Email validation
 			if not is_valid_email(arg):
 				return await ctx.send("Error! That is not a valid email!")
 
+			# Blacklisted emails
 			blacklist_names = [self.sample_username]  # If any email begins with one of these, it's invalid
-
 			if any(arg.lower().startswith(name.lower()) for name in blacklist_names):
 				await ctx.send(
 					f"{ctx.author.mention} Use your own email, not the sample one. Please try again with your own email.")
 				return
 
+			# Checks the warning email file to notify moderators if an email on the list is used. For example, a list of professor emails could be loaded.
 			try:
-				with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
+				with open(self.warn_emails, 'r') as file:
+					if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
+						sendIn = ctx.guild.get_channel(self.notify_id)
+						await sendIn.send(
+							f"Alert! Email on warning list used. Discord ID: {ctx.author.mention}, email `{arg}`.")
+					file.close()
+			except FileNotFoundError:
+				print("Warning list file not found, ignoring.")
+
+			# Checks the used emails file to see if the email has been used.
+			try:
+				with open(self.used_emails, 'r') as file:
 					if any(self.bot.hashing.check_hash(str(arg.lower()), str(line).strip('\n')) for line in file):
 						admin = await self.bot.fetch_user(self.admin_id)
 						await ctx.send(
@@ -121,31 +150,8 @@ class Verification(commands.Cog):
 			except FileNotFoundError:
 				print("Used emails file hasn't been created yet, continuing...")
 
-			try:
-				with open(self.warn_emails, 'r') as file:  # Checks the warning email file to notify moderators if an email on the list is used. For example, a list of professor emails could be loaded.
-					if any(str(arg.lower()) == str(line).strip('\n').lower() for line in file):
-						sendIn = ctx.guild.get_channel(self.notify_id)
-						await sendIn.send(
-							f"Alert! Email on warning list used. Discord ID: {ctx.author.mention}, email `{arg}`.")
-					file.close()
-			except FileNotFoundError:
-				print("Warning list file not found, ignoring.")
-
-			# This is a bit of a hacky way to do an email attempt checking system. If someone tries to repeatedly use the email command, they will be blacklisted from further attempts.
-			maxedOut = False
-			try:
-				if self.email_attempts[ctx.author.id] >= 5:
-					maxedOut = True
-					await ctx.send(
-						f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a "
-						f"moderator for assistance with verifying if this is in error. Thanks!")
-					sendIn = ctx.guild.get_channel(self.notify_id)
-					await sendIn.send(f"Alert! User {ctx.author.mention} has exceeded the amount of `!email` command uses.")
-					return
-			except:
-				print("")
-
-			if dm == self.verify_domain and not maxedOut:  # Send the actual email.
+			# Validation succeeded; send the actual email.
+			if dm == self.verify_domain and not maxedOut:
 				await ctx.send("Sending verification email...")
 				with smtplib.SMTP(self.email_server, self.email_port) as server:
 					server.ehlo()
@@ -197,6 +203,19 @@ class Verification(commands.Cog):
 			print(f'Verifying user {ctx.author.name}, token {arg}')
 			await ctx.message.delete()
 
+			# Stop user after too many invalid verification attempts.
+			try:
+				if self.verify_attempts[ctx.author.id] >= 5:
+					await ctx.send(
+						f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a "
+						f"moderator for assistance with verifying if this is in error. Thanks!")
+					sendIn = ctx.guild.get_channel(self.notify_id)
+					await sendIn.send(
+						f"Alert! User {ctx.author.mention} has exceeded the amount of `!verify` command uses.")
+					return
+			except:
+				print("")
+
 			# this is copied from above to avoid an issue where two people could use the same email before it was verified.
 			try:
 				with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
@@ -212,18 +231,7 @@ class Verification(commands.Cog):
 			except FileNotFoundError:
 				print("Used emails file hasn't been created yet, continuing...")
 
-			try:
-				if self.verify_attempts[ctx.author.id] >= 5:
-					await ctx.send(
-						f"{ctx.author.mention}, you have exceeded the maximum number of command uses. Please contact a "
-						f"moderator for assistance with verifying if this is in error. Thanks!")
-					sendIn = ctx.guild.get_channel(self.notify_id)
-					await sendIn.send(
-						f"Alert! User {ctx.author.mention} has exceeded the amount of `!verify` command uses.")
-					return
-			except:
-				print("")
-
+			# Do the actual verification.
 			if self.token_list:
 				if self.token_list[ctx.author.id] == arg:
 					await ctx.send(f"{ctx.author.mention}, you've been verified!")
