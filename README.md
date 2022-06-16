@@ -100,7 +100,7 @@ If the code is valid, they will be given a role, allowing access to the rest of 
 
 6. Finally, run `bot.py`:
    ```bash
-   python boy.py
+   python bot.py
    ```
 
 7. Congratulations! Assuming all went well and everything is installed correctly you should have a running Discord bot!
