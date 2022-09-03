@@ -36,6 +36,15 @@ class Verification(commands.Cog):
 			self.author_name = os.environ["author_name"]
 			self.webmail_link = os.environ["webmail_link"]
 
+			# Setup for automatic swap between admin and ticket channel pings during reverification.
+			try:
+				self.ticket_id = os.environ["ticket_id"]
+				self.ticket_id = int(self.ticket_id)
+				self.ticket_loaded = True
+			except KeyError:
+				print("ticket_id not loaded. Defaulting to admin_id for reverification messages.")
+				self.ticket_loaded = False
+
 			self.channel_id = int(self.channel_id)
 			self.notify_id = int(self.notify_id)
 			self.admin_id = int(self.admin_id)
@@ -45,13 +54,18 @@ class Verification(commands.Cog):
 			self.warn_emails = osp.join(self.bot.current_dir, self.bot.data_path, self.warn_emails)
 
 		except KeyError as e:
-			print(f"Config error.\n\tKey Not Loaded: {e}")
+			print(f"Config error.\n\tKey Not Loaded: {e}. Please set up an environment variable for this key and restart.")
 
 		# Create empty lists for currently active tokens, emails, and attempt rejection.
 		self.token_list = {}
 		self.email_list = {}
 		self.email_attempts = {}
 		self.verify_attempts = {}
+
+		# Check if data folder exists ahead of time, and create it if it doesn't.
+		data_dir = osp.join(self.bot.current_dir, self.bot.data_path)
+		if not os.path.exists(data_dir):
+			os.makedirs(data_dir)
 
 	# Instructions on how to verify.
 	# noinspection PyUnusedLocal
@@ -139,11 +153,18 @@ class Verification(commands.Cog):
 			try:
 				with open(self.used_emails, 'r') as file:
 					if any(self.bot.hashing.check_hash(str(arg.lower()), str(line).strip('\n')) for line in file):
-						admin = await self.bot.fetch_user(self.admin_id)
-						await ctx.send(
-							f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
-							f"error or are trying to re-verify, please contact {admin.mention} in this channel or through "
-							f"direct message. Thank you!")
+						if self.ticket_loaded:
+							ticket_channel = ctx.guild.get_channel(self.ticket_id)
+							await ctx.send(
+								f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
+								f"error or are trying to re-verify, please create a ticket in {ticket_channel.mention}. "
+								f"Thank you!")
+						else:
+							admin = await self.bot.fetch_user(self.admin_id)
+							await ctx.send(
+								f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
+								f"error or are trying to re-verify, please contact {admin.mention} in this channel or through "
+								f"direct message. Thank you!")
 						file.close()
 						return
 					file.close()
@@ -152,27 +173,32 @@ class Verification(commands.Cog):
 
 			# Validation succeeded; send the actual email.
 			if dm == self.verify_domain and not maxedOut:
-				await ctx.send("Sending verification email...")
-				with smtplib.SMTP(self.email_server, self.email_port) as server:
-					server.ehlo()
-					if self.email_port == 587 or self.email_port == 465:
-						context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-						server.starttls(context=context)
+				try:
+					await ctx.send("Sending verification email...")
+					with smtplib.SMTP(self.email_server, self.email_port) as server:
 						server.ehlo()
-					server.login(self.email_from, self.email_password)
-					token = random.randint(1000, 9999)
-					self.token_list[ctx.author.id] = str(token)
-					self.email_list[ctx.author.id] = arg
-					verify_email = ctx.guild.get_channel(self.channel_id)
+						if self.email_port == 587 or self.email_port == 465:
+							context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+							server.starttls(context=context)
+							server.ehlo()
+						server.login(self.email_from, self.email_password)
+						token = random.randint(1000, 9999)
+						self.token_list[ctx.author.id] = str(token)
+						self.email_list[ctx.author.id] = arg
+						verify_email = ctx.guild.get_channel(self.channel_id)
 
-					message_text = f"Hello {self.author_name}! Thank you for joining our Discord server! \n\n" \
-						f"The command to use in the #{verify_email.name} channel is: {self.bot_key}verify {token}\n\n" \
-						f"You can copy and paste that command into the #{verify_email.name} channel to verify. \n\n" \
-						f"This message was sent by a Discord verification bot. \n" \
-						f"If you did not request to verify, please contact {self.moderator_email} to let us know."
-					message = f"Subject: {self.email_subject}\n\n{message_text}"
-					server.sendmail(self.email_from, arg, message)
-					server.quit()
+						message_text = f"Hello {self.author_name}! Thank you for joining our Discord server! \n\n" \
+							f"The command to use in the #{verify_email.name} channel is: {self.bot_key}verify {token}\n\n" \
+							f"You can copy and paste that command into the #{verify_email.name} channel to verify. \n\n" \
+							f"This message was sent by a Discord verification bot. \n" \
+							f"If you did not request to verify, please contact {self.moderator_email} to let us know."
+						message = f"Subject: {self.email_subject}\n\n{message_text}"
+						server.sendmail(self.email_from, arg, message)
+						server.quit()
+				except Exception as e:
+					sendIn = ctx.guild.get_channel(self.notify_id)
+					await sendIn.send(f"Alert! Bot has encountered an exception. Traceback: {e}")
+					return
 
 				await ctx.send(f"Verification email sent to {ctx.author.mention}, please use `{self.bot_key}verify ####`, where `####` is the token, to verify.")
 

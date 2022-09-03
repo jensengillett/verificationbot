@@ -41,5 +41,7 @@ services:
       - admin_id=
       # The name sent addressing the person in the email
       - author_name=
+      # The channel id for a channel for tickets, if you would like to mention a channel instead of a user for reverification
+      - ticket_id=
     volumes:
       - ./data:/app/data
