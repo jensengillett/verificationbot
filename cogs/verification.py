@@ -39,6 +39,7 @@ class Verification(commands.Cog):
 			# Setup for automatic swap between admin and ticket channel pings during reverification.
 			try:
 				self.ticket_id = os.environ["ticket_id"]
+				self.ticket_id = int(self.ticket_id)
 				self.ticket_loaded = True
 			except KeyError:
 				print("ticket_id not loaded. Defaulting to admin_id for reverification messages.")
@@ -153,7 +154,7 @@ class Verification(commands.Cog):
 				with open(self.used_emails, 'r') as file:
 					if any(self.bot.hashing.check_hash(str(arg.lower()), str(line).strip('\n')) for line in file):
 						if self.ticket_loaded:
-							ticket_channel = await ctx.guild.get_channel(self.ticket_id)
+							ticket_channel = ctx.guild.get_channel(self.ticket_id)
 							await ctx.send(
 								f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
 								f"error or are trying to re-verify, please create a ticket in {ticket_channel.mention}. "
