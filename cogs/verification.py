@@ -36,6 +36,14 @@ class Verification(commands.Cog):
 			self.author_name = os.environ["author_name"]
 			self.webmail_link = os.environ["webmail_link"]
 
+			# Setup for automatic swap between admin and ticket channel pings during reverification.
+			try:
+				self.ticket_id = os.environ["ticket_id"]
+				self.ticket_loaded = True
+			except KeyError:
+				print("ticket_id not loaded. Defaulting to admin_id for reverification messages.")
+				self.ticket_loaded = False
+
 			self.channel_id = int(self.channel_id)
 			self.notify_id = int(self.notify_id)
 			self.admin_id = int(self.admin_id)
@@ -144,11 +152,18 @@ class Verification(commands.Cog):
 			try:
 				with open(self.used_emails, 'r') as file:
 					if any(self.bot.hashing.check_hash(str(arg.lower()), str(line).strip('\n')) for line in file):
-						admin = await self.bot.fetch_user(self.admin_id)
-						await ctx.send(
-							f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
-							f"error or are trying to re-verify, please contact {admin.mention} in this channel or through "
-							f"direct message. Thank you!")
+						if self.ticket_loaded:
+							ticket_channel = await ctx.guild.get_channel(self.ticket_id)
+							await ctx.send(
+								f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
+								f"error or are trying to re-verify, please create a ticket in {ticket_channel.mention}. "
+								f"Thank you!")
+						else:
+							admin = await self.bot.fetch_user(self.admin_id)
+							await ctx.send(
+								f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
+								f"error or are trying to re-verify, please contact {admin.mention} in this channel or through "
+								f"direct message. Thank you!")
 						file.close()
 						return
 					file.close()

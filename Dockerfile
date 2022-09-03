@@ -29,6 +29,7 @@ ENV server_role=
 ENV channel_id=
 ENV notify_id=
 ENV admin_id=
+ENV ticket_id=
 ENV author_name=
 
 COPY . /app
