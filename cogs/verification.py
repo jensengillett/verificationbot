@@ -157,27 +157,32 @@ class Verification(commands.Cog):
 
 			# Validation succeeded; send the actual email.
 			if dm == self.verify_domain and not maxedOut:
-				await ctx.send("Sending verification email...")
-				with smtplib.SMTP(self.email_server, self.email_port) as server:
-					server.ehlo()
-					if self.email_port == 587 or self.email_port == 465:
-						context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-						server.starttls(context=context)
+				try:
+					await ctx.send("Sending verification email...")
+					with smtplib.SMTP(self.email_server, self.email_port) as server:
 						server.ehlo()
-					server.login(self.email_from, self.email_password)
-					token = random.randint(1000, 9999)
-					self.token_list[ctx.author.id] = str(token)
-					self.email_list[ctx.author.id] = arg
-					verify_email = ctx.guild.get_channel(self.channel_id)
+						if self.email_port == 587 or self.email_port == 465:
+							context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+							server.starttls(context=context)
+							server.ehlo()
+						server.login(self.email_from, self.email_password)
+						token = random.randint(1000, 9999)
+						self.token_list[ctx.author.id] = str(token)
+						self.email_list[ctx.author.id] = arg
+						verify_email = ctx.guild.get_channel(self.channel_id)
 
-					message_text = f"Hello {self.author_name}! Thank you for joining our Discord server! \n\n" \
-						f"The command to use in the #{verify_email.name} channel is: {self.bot_key}verify {token}\n\n" \
-						f"You can copy and paste that command into the #{verify_email.name} channel to verify. \n\n" \
-						f"This message was sent by a Discord verification bot. \n" \
-						f"If you did not request to verify, please contact {self.moderator_email} to let us know."
-					message = f"Subject: {self.email_subject}\n\n{message_text}"
-					server.sendmail(self.email_from, arg, message)
-					server.quit()
+						message_text = f"Hello {self.author_name}! Thank you for joining our Discord server! \n\n" \
+							f"The command to use in the #{verify_email.name} channel is: {self.bot_key}verify {token}\n\n" \
+							f"You can copy and paste that command into the #{verify_email.name} channel to verify. \n\n" \
+							f"This message was sent by a Discord verification bot. \n" \
+							f"If you did not request to verify, please contact {self.moderator_email} to let us know."
+						message = f"Subject: {self.email_subject}\n\n{message_text}"
+						server.sendmail(self.email_from, arg, message)
+						server.quit()
+				except Exception as e:
+					sendIn = ctx.guild.get_channel(self.notify_id)
+					await sendIn.send(f"Alert! Bot has encountered an exception. Traceback: {e}")
+					return
 
 				await ctx.send(f"Verification email sent to {ctx.author.mention}, please use `{self.bot_key}verify ####`, where `####` is the token, to verify.")
 
