@@ -45,13 +45,18 @@ class Verification(commands.Cog):
 			self.warn_emails = osp.join(self.bot.current_dir, self.bot.data_path, self.warn_emails)
 
 		except KeyError as e:
-			print(f"Config error.\n\tKey Not Loaded: {e}")
+			print(f"Config error.\n\tKey Not Loaded: {e}. Please set up an environment variable for this key and restart.")
 
 		# Create empty lists for currently active tokens, emails, and attempt rejection.
 		self.token_list = {}
 		self.email_list = {}
 		self.email_attempts = {}
 		self.verify_attempts = {}
+
+		# Check if data folder exists ahead of time, and create it if it doesn't.
+		data_dir = osp.join(self.bot.current_dir, self.bot.data_path)
+		if not os.path.exists(data_dir):
+			os.makedirs(data_dir)
 
 	# Instructions on how to verify.
 	# noinspection PyUnusedLocal
