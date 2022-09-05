@@ -196,6 +196,7 @@ class Verification(commands.Cog):
 						server.sendmail(self.email_from, arg, message)
 						server.quit()
 				except Exception as e:
+					await ctx.send(f"Error! Verification email not sent. Moderators have been informed automatically. Please wait.")
 					sendIn = ctx.guild.get_channel(self.notify_id)
 					await sendIn.send(f"Alert! Bot has encountered an exception. Traceback: {e}")
 					print(f"Alert! Bot has encountered an exception. Traceback: {e}")
