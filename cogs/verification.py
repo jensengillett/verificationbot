@@ -198,6 +198,7 @@ class Verification(commands.Cog):
 				except Exception as e:
 					sendIn = ctx.guild.get_channel(self.notify_id)
 					await sendIn.send(f"Alert! Bot has encountered an exception. Traceback: {e}")
+					print(f"Alert! Bot has encountered an exception. Traceback: {e}")
 					return
 
 				await ctx.send(f"Verification email sent to {ctx.author.mention}, please use `{self.bot_key}verify ####`, where `####` is the token, to verify.")
