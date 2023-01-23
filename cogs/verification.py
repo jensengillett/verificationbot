@@ -150,26 +150,8 @@ class Verification(commands.Cog):
 				print("Warning list file not found, ignoring.")
 
 			# Checks the used emails file to see if the email has been used.
-			try:
-				with open(self.used_emails, 'r') as file:
-					if any(self.bot.hashing.check_hash(str(arg.lower()), str(line).strip('\n')) for line in file):
-						if self.ticket_loaded:
-							ticket_channel = ctx.guild.get_channel(self.ticket_id)
-							await ctx.send(
-								f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
-								f"error or are trying to re-verify, please create a ticket in {ticket_channel.mention}. "
-								f"Thank you!")
-						else:
-							admin = await self.bot.fetch_user(self.admin_id)
-							await ctx.send(
-								f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
-								f"error or are trying to re-verify, please contact {admin.mention} in this channel or through "
-								f"direct message. Thank you!")
-						file.close()
-						return
-					file.close()
-			except FileNotFoundError:
-				print("Used emails file hasn't been created yet, continuing...")
+			if await self.check_emails_file(ctx, arg):
+				return  # message has already been printed, so just exit
 
 			# Validation succeeded; send the actual email.
 			if dm == self.verify_domain and not maxedOut:
@@ -244,20 +226,9 @@ class Verification(commands.Cog):
 			except:
 				print("")
 
-			# this is copied from above to avoid an issue where two people could use the same email before it was verified.
-			try:
-				with open(self.used_emails, 'r') as file:  # Checks the used emails file to see if the email has been used.
-					if any(self.bot.hashing.check_hash(str(self.email_list[ctx.author.id]), str(line).strip('\n')) for line in file):
-						admin = await self.bot.fetch_user(self.admin_id)
-						await ctx.send(
-							f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
-							f"error or are trying to re-verify, please contact {admin.mention} in this channel or through "
-							f"direct message. Thank you!")
-						file.close()
-						return
-					file.close()
-			except FileNotFoundError:
-				print("Used emails file hasn't been created yet, continuing...")
+			# Checks the used emails file to see if an email has already been used. (Repeated to prevent multiple uses of the same email)
+			if await self.check_emails_file(ctx, self.email_list[ctx.author.id]):
+				return  # message has already been printed, so just exit
 
 			# Do the actual verification.
 			if self.token_list:
@@ -330,12 +301,48 @@ class Verification(commands.Cog):
 	@commands.command(name="active_tokens", aliases=["verify_in_progress", "in_progress", "activetokens", "verifyinprogress", "inprogress"])
 	@commands.guild_only()
 	async def _active_tokens(self, ctx):
-		print(f"Printing active tokens to notification chat.")
+		"""
+		Get the active tokens list and print it - dev command.
+		:param ctx: Discord context.
+		:return: Nothing
+		"""
+		print(f"Printing active tokens.")
 		friendly_token_list = {}
 		for key in self.token_list:
 			friendly_token_list[f"<@{key}>"] = self.token_list[key]
-		sendIn = ctx.guild.get_channel(self.notify_id)
+		sendIn = ctx.guild.get_channel(ctx.channel.id)
 		await sendIn.send(f"Active verification tokens: \n{friendly_token_list}")
+
+	async def check_emails_file(self, ctx, arg):
+		"""
+		This is pulled out of the email and verify function because it was duplicated code in both - having it in one
+		place should make it easier to manage in the future.
+		:param ctx: Discord context.
+		:param arg: Argument to check against.
+		:return: True if email matched, False otherwise.
+		"""
+		try:
+			with open(self.used_emails, 'r') as file:
+				if any(self.bot.hashing.check_hash(str(arg.lower()), str(line).strip('\n')) for line in file):
+					if self.ticket_loaded:
+						ticket_channel = ctx.guild.get_channel(self.ticket_id)
+						await ctx.send(
+							f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
+							f"error or are trying to re-verify, please create a ticket in {ticket_channel.mention}. "
+							f"With it, include your {self.sample_username} and a screenshot of the 4-digit code"
+							f"from your email from when you first verified. Thank you!")
+					else:
+						admin = await self.bot.fetch_user(self.admin_id)
+						await ctx.send(
+							f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
+							f"error or are trying to re-verify, please contact {admin.mention} in this channel or through "
+							f"direct message. Thank you!")
+					file.close()
+					return True
+				file.close()
+				return False
+		except FileNotFoundError:
+			print("Used emails file hasn't been created yet, continuing...")
 
 
 def setup(bot):
