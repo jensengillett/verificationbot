@@ -329,7 +329,7 @@ class Verification(commands.Cog):
 						await ctx.send(
 							f"Error, that email has already been used {ctx.author.mention}! If you believe this is an "
 							f"error or are trying to re-verify, please create a ticket in {ticket_channel.mention}. "
-							f"With it, include your {self.sample_username} and a screenshot of the 4-digit code"
+							f"With it, include your {self.sample_username} and a screenshot of the 4-digit code "
 							f"from your email from when you first verified. Thank you!")
 					else:
 						admin = await self.bot.fetch_user(self.admin_id)
