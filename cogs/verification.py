@@ -234,8 +234,6 @@ class Verification(commands.Cog):
 			# Do the actual verification.
 			if self.token_list:
 				if self.token_list[ctx.author.id] == arg:
-					await ctx.send(f"{ctx.author.mention}, you've been verified!")
-
 					role = discord.utils.get(ctx.guild.roles, name=self.role)
 					if not role:
 						role = discord.utils.find(lambda r: str(r.id) == str(self.role), ctx.guild.roles)
@@ -245,6 +243,9 @@ class Verification(commands.Cog):
 						hashed = self.bot.hashing.hash(self.email_list[ctx.author.id])
 						file.write(f"{hashed}\n")
 						file.close()
+
+					self.token_list.pop(ctx.author.id)  # Remove the token from the active list.
+					await ctx.send(f"{ctx.author.mention}, you've been verified!")
 				else:
 					await ctx.send(f"Invalid token submitted, {ctx.author.mention}! Please submit the 4-digit token send to your email to verify.")
 					if self.verify_attempts:
