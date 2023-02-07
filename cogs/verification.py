@@ -185,7 +185,7 @@ class Verification(commands.Cog):
 					return
 
 				await ctx.send(f"Verification email sent to {ctx.author.mention}, please use `{self.bot_key}verify ####`, where `####` is the token, to verify.\n"
-							   f"If you can't find the email, please check your 'Junk Email' folder before contacting moderation staff.")
+							   f"If you can't find the email, please check your 'Junk Email' folder before contacting the moderation team.")
 
 				if self.email_attempts:
 					if ctx.author.id in self.email_attempts:
