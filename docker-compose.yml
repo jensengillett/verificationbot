@@ -1,7 +1,9 @@
-version: "3"
+version: "3.1"
 services:
-  dockerbot:
-    image: kaosjr/verificationbot:latest
+  verificationbot:
+    build:
+      context: ./
+      dockerfile: Dockerfile
     environment:
       # The Discord bot token being used. Do not share this!
       - token=
